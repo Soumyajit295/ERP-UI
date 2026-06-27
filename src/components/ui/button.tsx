@@ -67,8 +67,14 @@ function Button({
       disabled={disabled || loading}
       {...props}
     >
-      {loading && <Loader2 className="animate-spin" data-icon="loading" />}
-      {children}
+      {asChild
+        ? React.Children.only(children)
+        : (
+          <>
+            {loading && <Loader2 className="animate-spin" data-icon="loading" />}
+            {children}
+          </>
+        )}
     </Comp>
   )
 }

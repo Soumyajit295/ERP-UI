@@ -1,11 +1,12 @@
-import { Button } from "./components/ui/button"
-
+import { AppLayout } from "@/components/AppLayout"
 
 function App() {
   return (
-    <div className="flex min-h-svh flex-col items-center justify-center">
-      <Button>Click me</Button>
-    </div>
+    <AppLayout>
+      <div className="flex flex-1 items-center justify-center p-6">
+        <p className="text-muted-foreground">Main content area</p>
+      </div>
+    </AppLayout>
   )
 }
 
