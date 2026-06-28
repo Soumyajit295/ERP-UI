@@ -1,4 +1,4 @@
-import { type LucideIcon, LayoutDashboard, Users, FileText, Settings, UserCog, UserPlus, FileSpreadsheet, FilePen, type IconNode } from "lucide-react"
+import { type LucideIcon, LayoutDashboard, Users, FileText, Settings, UserCog, UserPlus, FileSpreadsheet, FilePen } from "lucide-react"
 
 export type SidebarMenu = {
   label: string
