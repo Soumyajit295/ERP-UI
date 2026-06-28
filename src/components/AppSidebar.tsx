@@ -1,9 +1,10 @@
 import { useState } from "react"
-import { ChevronDown, PanelLeftClose, PanelLeft, Sun, Moon } from "lucide-react"
-import { NavLink } from "react-router-dom"
+import { ChevronDown, PanelLeftClose, PanelLeft, Sun, Moon, LogOut } from "lucide-react"
+import { NavLink, useNavigate } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { useSidebar } from "@/hooks/useSidebar"
 import { useTheme } from "@/hooks/useTheme"
+import { useAuthStore } from "@/stores/auth.store"
 import { Button } from "@/components/ui/button"
 import { sidebarMenuGroups, type SidebarMenu } from "@/lib/SidebarMenu"
 
@@ -89,6 +90,14 @@ function SidebarMenuItem({ item, collapsed, depth = 0 }: { item: SidebarMenu; co
 export function AppSidebar() {
   const { open, toggle } = useSidebar()
   const { theme, toggleTheme } = useTheme()
+  const navigate = useNavigate()
+  const clearUser = useAuthStore((s) => s.clearUser)
+
+  function handleLogout() {
+    localStorage.removeItem("access_token")
+    clearUser()
+    navigate("/signin", { replace: true })
+  }
 
   return (
     <aside
@@ -119,7 +128,21 @@ export function AppSidebar() {
           </div>
         ))}
       </nav>
-      <div className="border-t border-border p-2">
+      <div className="p-2 space-y-1">
+        <Button
+          variant="ghost"
+          size={open ? "default" : "icon"}
+          onClick={handleLogout}
+          className={cn(
+            "w-full justify-start gap-3 px-3 text-red-500 hover:bg-red-500/10 hover:text-red-600",
+            !open && "justify-center px-0",
+          )}
+        >
+          <LogOut className="size-4 shrink-0" />
+          {open && <span>Logout</span>}
+        </Button>
+      </div>
+      <div className="border-t border-border p-2 space-y-1">
         <Button
           variant="ghost"
           size={open ? "default" : "icon"}
