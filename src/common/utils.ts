@@ -1,6 +1,17 @@
-interface FetchWithAuthOptions extends RequestInit {
+interface FetchWithAuthOptions extends Omit<RequestInit, 'body'> {
     skipAuth?: boolean
+    body?: unknown
 }
+
+export class ApiError extends Error {
+    status: number
+    constructor(message: string, status: number) {
+        super(message)
+        this.status = status
+    }
+}
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 export const fetchWithAuth = async<T>(
     url: string,
@@ -9,28 +20,34 @@ export const fetchWithAuth = async<T>(
     const {skipAuth = false,headers={},body,method,...restOptions} = options
 
     const isFormData = body instanceof FormData
+    const isJsonBody = !isFormData && typeof body === 'object' && body !== null
 
     const token = localStorage.getItem('access_token')
 
     const defaultHeaders: HeadersInit = {
-        ...(!isFormData && method!=='GET' && method!=='DELETE' ? { 'Content-Type': 'application/json' } : {}),
+        ...(isJsonBody ? { 'Content-Type': 'application/json' } : {}),
         ...(token && !skipAuth ? {Authorization : `Bearer ${token}`} : {}),
         ...headers
     }
+
+    const finalBody = isJsonBody ? JSON.stringify(body) : (body as BodyInit | null | undefined)
 
     const finalOptions = {
         ...restOptions,
         method,
         headers: defaultHeaders,
-        body
+        body: finalBody
     }
 
-    const response = await fetch(url,finalOptions)
+    const response = await fetch(`${BASE_URL}${url}`,finalOptions)
 
     if(!response.ok){
         let message = "API ERROR"
-        const error = await response.json()
-        message = error.message || message
+        try {
+            const error = await response.json()
+            message = error.message || message
+        } catch {}
+        throw new ApiError(message, response.status)
     }
 
     if (response.status === 204) {
