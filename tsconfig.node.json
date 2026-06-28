@@ -5,7 +5,6 @@
     "lib": ["ES2023"],
     "types": ["node"],
     "skipLibCheck": true,
-    "baseUrl": ".",
     "paths": {
       "@/*": [
         "./src/*"
