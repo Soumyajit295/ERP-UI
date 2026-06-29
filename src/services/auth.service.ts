@@ -1,4 +1,5 @@
 import { fetchWithAuth } from "@/common/utils"
+import type { UserProfile } from "@/stores/auth.store"
 
 interface SigninRequestDto {
     email: string
@@ -35,6 +36,10 @@ export const register = async (payload: RegisterRequestDto): Promise<AuthRespons
     })
 }
 
-export const getMeData = async() => {
-    return fetchWithAuth('auth/me')
+export const getMeData = async(): Promise<UserProfile> => {
+    return fetchWithAuth<UserProfile>('auth/me')
+}
+
+export const logout = async() => {
+    return fetchWithAuth('auth/logout')
 }
