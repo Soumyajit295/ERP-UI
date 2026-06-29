@@ -4,9 +4,11 @@ import { AppRouter } from "@/router"
 import { getMeData } from "@/services/auth.service"
 import { ApiError } from "@/common/utils"
 import { Toaster } from "@/components/ui/toaster"
+import { useAuthStore } from "./stores/auth.store"
 
 function App() {
   const navigate = useNavigate()
+  const {setUser} = useAuthStore()
 
   useEffect(() => {
     const token = localStorage.getItem("access_token")
@@ -14,7 +16,8 @@ function App() {
 
     const getMe = async () => {
       try {
-        await getMeData()
+        const user = await getMeData()
+        setUser(user)
       } catch (error) {
         if (error instanceof ApiError && error.status === 401) {
           navigate("/signin", { replace: true })

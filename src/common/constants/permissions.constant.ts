@@ -1,0 +1,28 @@
+export const PERMISSIONS = [
+  "customers_create",
+  "customers_modify",
+  "customers_read",
+  "finance_create",
+  "finance_modify",
+  "finance_read",
+  "inventory_create",
+  "inventory_modify",
+  "inventory_read",
+  "product_create",
+  "product_modify",
+  "product_read",
+  "purchases_create",
+  "purchases_modify",
+  "purchases_read",
+  "sales_create",
+  "sales_modify",
+  "sales_read",
+  "suppliers_create",
+  "suppliers_modify",
+  "suppliers_read",
+  "user_create",
+  "user_modify",
+  "user_read",
+] as const
+
+export type Permission = (typeof PERMISSIONS)[number]

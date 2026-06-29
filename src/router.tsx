@@ -20,7 +20,6 @@ export function AppRouter() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
       </Route>
-      <Route path="*" element={<Navigate to="/signin" replace />} />
     </Routes>
   )
 }
