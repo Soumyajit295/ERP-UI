@@ -1,28 +1,42 @@
-export const PERMISSIONS = [
-  "customers_create",
-  "customers_modify",
-  "customers_read",
-  "finance_create",
-  "finance_modify",
-  "finance_read",
-  "inventory_create",
-  "inventory_modify",
-  "inventory_read",
-  "product_create",
-  "product_modify",
-  "product_read",
-  "purchases_create",
-  "purchases_modify",
-  "purchases_read",
-  "sales_create",
-  "sales_modify",
-  "sales_read",
-  "suppliers_create",
-  "suppliers_modify",
-  "suppliers_read",
-  "user_create",
-  "user_modify",
-  "user_read",
-] as const
-
-export type Permission = (typeof PERMISSIONS)[number]
+export const PERMISSIONS = {
+  Customers: {
+    Create: "customers_create",
+    Modify: "customers_modify",
+    Read: "customers_read",
+  },
+  Finance: {
+    Create: "finance_create",
+    Modify: "finance_modify",
+    Read: "finance_read",
+  },
+  Inventory: {
+    Create: "inventory_create",
+    Modify: "inventory_modify",
+    Read: "inventory_read",
+  },
+  Product: {
+    Create: "product_create",
+    Modify: "product_modify",
+    Read: "product_read",
+  },
+  Purchases: {
+    Create: "purchases_create",
+    Modify: "purchases_modify",
+    Read: "purchases_read",
+  },
+  Sales: {
+    Create: "sales_create",
+    Modify: "sales_modify",
+    Read: "sales_read",
+  },
+  Suppliers: {
+    Create: "suppliers_create",
+    Modify: "suppliers_modify",
+    Read: "suppliers_read",
+  },
+  User: {
+    Create: "user_create",
+    Modify: "user_modify",
+    Read: "user_read",
+  },
+} as const;
