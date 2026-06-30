@@ -2,6 +2,8 @@ import { Routes, Route, Navigate } from "react-router-dom"
 import { AppLayout } from "@/components/AppLayout"
 import SignIn from "@/pages/auth/SignIn"
 import Register from "@/pages/auth/Register"
+import ForgotPassword from "@/pages/auth/ForgotPassword"
+import ResetPassword from "@/pages/auth/ResetPassword"
 import Dashboard from "@/pages/app/Dashboard"
 import type { ReactNode } from "react"
 import { ProtectedRoute, type ProtectedRouteProps } from "./customComponent/ProtectedRoute"
@@ -16,6 +18,8 @@ export function AppRouter() {
     <Routes>
       <Route path="/signin" element={<SignIn />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password/:token" element={<ResetPassword />} />
       <Route element={guard(<AppLayout />)}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />

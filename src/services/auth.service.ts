@@ -16,6 +16,15 @@ interface RegisterRequestDto {
     password: string
 }
 
+interface ForgetPasswordDto {
+    email: string
+}
+
+interface ResetPasswordDto {
+    token: string
+    password: string
+}
+
 interface AuthResponse {
     accessToken: string
 }
@@ -25,6 +34,7 @@ export const signin = async (payload: SigninRequestDto): Promise<AuthResponse> =
         method: 'POST',
         body: payload,
         skipAuth: true,
+        credentials: 'include'
     })
 }
 
@@ -42,4 +52,12 @@ export const getMeData = async(): Promise<UserProfile> => {
 
 export const logout = async() => {
     return fetchWithAuth('auth/logout')
+}
+
+export const forgetPassword = async(payload: ForgetPasswordDto) => {
+    return fetchWithAuth('auth/generate-resetlink',{method: 'POST',body: payload,skipAuth: true})
+}
+
+export const resetPassword = async(payload: ResetPasswordDto) => {
+    return fetchWithAuth('auth/reset-password',{method: 'POST',body: payload,skipAuth: true})
 }
