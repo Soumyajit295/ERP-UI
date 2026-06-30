@@ -13,6 +13,29 @@ export class ApiError extends Error {
 
 const BASE_URL = import.meta.env.VITE_BASE_URL;
 
+const refreshAccessToken = async(): Promise<string> => {
+    const response = await fetch(`${BASE_URL}auth/refresh-token`,{
+        method: 'POST',
+        credentials: 'include'
+    })
+
+    if(!response.ok){
+        localStorage.removeItem('access_token')
+        window.location.href = "/signin";
+    }
+
+    const data = await response.json();
+
+    if (!data?.accessToken) {
+        localStorage.removeItem("access_token");
+        window.location.href = "/signin";
+    }
+
+    localStorage.setItem("access_token", data.accessToken);
+
+    return data.accessToken;
+}
+
 export const fetchWithAuth = async<T>(
     url: string,
     options: FetchWithAuthOptions = {}
@@ -39,7 +62,18 @@ export const fetchWithAuth = async<T>(
         body: finalBody
     }
 
-    const response = await fetch(`${BASE_URL}${url}`,finalOptions)
+    let response = await fetch(`${BASE_URL}${url}`,finalOptions)
+
+    if(response.status === 401 && !skipAuth){
+        const newAccessToken = await refreshAccessToken()
+
+        finalOptions.headers = {
+            ...defaultHeaders,
+            Authorization : `Bearer ${newAccessToken}`
+        }
+
+        response = await fetch(`${BASE_URL}${url}`,finalOptions)
+    }
 
     if(!response.ok){
         let message = "API ERROR"
