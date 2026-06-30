@@ -42,6 +42,11 @@ export default function SignIn() {
             <CardContent className="space-y-4">
               <InputField name="email" label="Email" required type="email" placeholder="john@example.com" />
               <InputField name="password" label="Password" required type="password" placeholder="••••••••" />
+              <div className="text-right">
+                <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-success hover:underline">
+                  Forgot password?
+                </Link>
+              </div>
             </CardContent>
             <CardFooter className="flex-col gap-4">
               <Button type="submit" variant="success" className="w-full" loading={loading}>
