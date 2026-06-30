@@ -1,9 +1,9 @@
-import { type LucideIcon, LayoutDashboard, Users, FileText, Settings, UserCog, UserPlus, FileSpreadsheet, FilePen } from "lucide-react"
+import { type LucideIcon, LayoutDashboard, Users, Package, Truck, ShoppingCart, Warehouse, UserCheck, FileText, Wallet, Receipt, CreditCard } from "lucide-react"
 
 export type SidebarMenu = {
   label: string
-  icon: LucideIcon
-  href?: string
+  icon?: LucideIcon
+  path?: string
   children?: SidebarMenu[]
   permission?: string
 }
@@ -15,49 +15,77 @@ export type SidebarMenuGroup = {
 
 export const sidebarMenuGroups: SidebarMenuGroup[] = [
   {
+    label: "Main Menu",
     items: [
       {
         label: "Dashboard",
         icon: LayoutDashboard,
-        href: "/dashboard",
+        path: "/dashboard",
         permission: "dashboard.view",
       },
-    ],
-  },
-  {
-    label: "Management",
-    items: [
       {
-        label: "Users",
+        label: "Employees",
         icon: Users,
-        permission: "users.view",
-        children: [
-          { label: "All Users", icon: UserCog, href: "/users", permission: "users.list" },
-          { label: "Invite", icon: UserPlus, href: "/users/invite", permission: "users.invite" },
-        ],
+        path: "#",
       },
       {
-        label: "Documents",
-        icon: FileText,
-        permission: "documents.view",
+        label: "Products",
+        icon: Package,
         children: [
-          { label: "Spreadsheets", icon: FileSpreadsheet, href: "/documents/spreadsheets", permission: "documents.spreadsheets" },
-          { label: "Reports", icon: FilePen, href: "/documents/reports", permission: "documents.reports" },
-        ],
+          { label: "All Products", path: "#"},
+          { label: "Categories", path: "#"}
+        ]
+      },
+      {
+        label: "Suppliers",
+        icon: Truck,
+        path: "#",
+      },
+      {
+        label: "Purchases",
+        icon: ShoppingCart,
+        path: "#",
+      },
+      {
+        label: "Inventory",
+        icon: Warehouse,
+        children: [
+          { label: "Stock Overview", path: "#"},
+          { label: "Warehouses", path: "#"}
+        ]
       },
     ],
   },
   {
-    label: "System",
+    label: "Sales & Finance",
     items: [
       {
-        label: "Settings",
-        icon: Settings,
-        href: "/settings",
-        permission: "settings.view",
+        label: "Customers",
+        icon: UserCheck,
+        path: "#"
       },
-    ],
-  },
+      {
+        label: "Sales Order",
+        icon: FileText,
+        path: "#"
+      },
+      {
+        label: "Finance",
+        icon: Wallet,
+        path: "#"
+      },
+      {
+        label: "Invoices",
+        icon: Receipt,
+        path: "#"
+      },
+      {
+        label: "Payments",
+        icon: CreditCard,
+        path: "#"
+      }
+    ]
+  }
 ]
 
 export function filterMenusByPermission(
