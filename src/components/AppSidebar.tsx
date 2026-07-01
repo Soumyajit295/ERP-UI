@@ -93,11 +93,6 @@ export function AppSidebar() {
   const navigate = useNavigate()
   const {clearUser,user} = useAuthStore()
 
-  const handleLogout = async() => {
-    localStorage.removeItem('access_token')
-    clearUser()
-    navigate('/signin')
-  }
   return (
     <aside
       data-state={open ? "expanded" : "collapsed"}
@@ -175,22 +170,9 @@ export function AppSidebar() {
         <Button
           variant="ghost"
           size={open ? "default" : "icon"}
-          onClick={handleLogout}
-          className={cn(
-            "w-full justify-start gap-3 text-red-500 hover:bg-red-500/10 hover:text-red-600",
-            open ? "px-3" : "justify-center px-0"
-          )}
-        >
-          <LogOut className="h-4 w-4 shrink-0" />
-          {open && <span>Logout</span>}
-        </Button>
-
-        <Button
-          variant="ghost"
-          size={open ? "default" : "icon"}
           onClick={toggleTheme}
           className={cn(
-            "w-full justify-start gap-3",
+            "w-full justify-start gap-3 cursor-pointer",
             open ? "px-3" : "justify-center px-0"
           )}
         >

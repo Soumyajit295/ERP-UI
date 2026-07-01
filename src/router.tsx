@@ -7,6 +7,7 @@ import ResetPassword from "@/pages/auth/ResetPassword"
 import Dashboard from "@/pages/app/Dashboard"
 import type { ReactNode } from "react"
 import { ProtectedRoute, type ProtectedRouteProps } from "./customComponent/ProtectedRoute"
+import { EmployePage } from "./pages/employees/EmployePage"
 
 export function AppRouter() {
 
@@ -23,6 +24,7 @@ export function AppRouter() {
       <Route element={guard(<AppLayout />)}>
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
+        <Route path="/employee" element={<EmployePage/>}/>
       </Route>
     </Routes>
   )
