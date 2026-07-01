@@ -54,10 +54,10 @@ export const logout = async() => {
     return fetchWithAuth('auth/logout')
 }
 
-export const forgetPassword = async(payload: ForgetPasswordDto) => {
+export const forgetPassword = async(payload: ForgetPasswordDto): Promise<{message: string}> => {
     return fetchWithAuth('auth/generate-resetlink',{method: 'POST',body: payload,skipAuth: true})
 }
 
-export const resetPassword = async(payload: ResetPasswordDto) => {
+export const resetPassword = async(payload: ResetPasswordDto): Promise<{message: string}> => {
     return fetchWithAuth('auth/reset-password',{method: 'POST',body: payload,skipAuth: true})
 }

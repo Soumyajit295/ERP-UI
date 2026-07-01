@@ -1,4 +1,3 @@
-import { useState } from "react"
 import { Link } from "react-router-dom"
 import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -18,7 +17,12 @@ export default function ForgotPassword() {
   const {formState: {isSubmitting}} = form
 
   async function onSubmit(data: ForgotPasswordFormData) {
-    console.log('Forget password link sent successfully')
+    try {
+      const resp = await forgetPassword({email: data.email})
+      toast.success(resp?.message || "Reset mail send successfully")
+    } catch (error: any) {
+      toast.error(error.message || "Failed to send reset link")
+    }
   }
 
   return (
