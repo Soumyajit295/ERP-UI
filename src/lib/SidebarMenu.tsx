@@ -26,7 +26,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
       {
         label: "Employees",
         icon: Users,
-        path: "#",
+        path: "/employee",
       },
       {
         label: "Products",

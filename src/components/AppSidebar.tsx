@@ -90,8 +90,7 @@ function SidebarMenuItem({ item, collapsed, depth = 0 }: { item: SidebarMenu; co
 export function AppSidebar() {
   const { open, toggle } = useSidebar()
   const { theme, toggleTheme } = useTheme()
-  const navigate = useNavigate()
-  const {clearUser,user} = useAuthStore()
+  const {user} = useAuthStore()
 
   return (
     <aside
