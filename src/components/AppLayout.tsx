@@ -13,7 +13,7 @@ export function AppLayout() {
         <AppSidebar />
         <div className="flex flex-1 flex-col">
           <Navbar />
-          <main className="flex-1 p-2">
+          <main className="min-h-0 flex-1 p-2">
             <Outlet />
           </main>
         </div>
