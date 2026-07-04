@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { InputField } from "@/customComponent/InputField"
+import { InputField } from "@/customComponent/form-components/InputField"
 import { register as registerApi } from "@/services/auth.service"
 import { registerSchema, type RegisterFormData } from "@/lib/validation"
 

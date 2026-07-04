@@ -7,9 +7,10 @@ interface PageHeaderProps {
   actionButtonLabel: string
   onActionButtonClick?: () => void
   extraButton?: React.ReactNode
+  addPermission?: boolean
 }
 
-export function PageHeader({ pageName, pageSubName, actionButtonLabel, onActionButtonClick, extraButton }: PageHeaderProps) {
+export function PageHeader({ pageName, pageSubName, actionButtonLabel, onActionButtonClick, extraButton , addPermission}: PageHeaderProps) {
   return (
     <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
       <div>
@@ -20,12 +21,14 @@ export function PageHeader({ pageName, pageSubName, actionButtonLabel, onActionB
       </div>
       <div className="flex items-center gap-2">
         {extraButton}
-        <CustomButton
-            icon={<Plus className="size-4" />}
-            label={actionButtonLabel}
-            onClick={onActionButtonClick}
-            className="p-5"
-        />
+        {addPermission && (
+          <CustomButton
+              icon={<Plus className="size-4" />}
+              label={actionButtonLabel}
+              onClick={onActionButtonClick}
+              className="p-5"
+          />
+        )}
       </div>
     </div>
   )

@@ -11,6 +11,18 @@ function ActionsDropdown<TData>({
   actions: Action<TData>[]
   row: Row<TData>
 }) {
+  const visibleActions = actions.filter((action) => {
+    if (typeof action.permission === "function") {
+      return action.permission(row.original)
+    }
+
+    return action.permission !== false
+  })
+
+  if (visibleActions.length === 0) {
+    return null
+  }
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -19,7 +31,7 @@ function ActionsDropdown<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="min-w-32">
-        {actions.map((action) => {
+        {visibleActions.map((action) => {
           const Icon = action.icon
           const destructive = action.variant === "destructive"
           return (

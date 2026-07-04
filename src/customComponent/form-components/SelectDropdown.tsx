@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react"
+import { Controller, useFormContext } from "react-hook-form"
 import { Check, ChevronDown, Search, X } from "lucide-react"
 import {
   DropdownMenu,
@@ -17,12 +18,10 @@ interface SelectOption {
   disabled?: boolean
 }
 
-interface SelectDropdownProps {
+type SelectValue = string | string[] | null
+
+interface SelectDropdownBaseProps {
   options: SelectOption[]
-  /** For single select: string | null. For multi select: string[] */
-  value: string | string[] | null
-  /** Called when selection changes */
-  onChange: (value: string | string[] | null) => void
   /** "single" (default) or "multiple" */
   multiple?: boolean
   /** Enables search input inside dropdown */
@@ -33,9 +32,30 @@ interface SelectDropdownProps {
   emptyMessage?: string
   disabled?: boolean
   className?: string
+  required?: boolean
 }
 
-export function SelectDropdown({
+type SelectDropdownProps =
+  | (SelectDropdownBaseProps & {
+      name: string
+      value?: undefined
+      onChange?: undefined
+    })
+  | (SelectDropdownBaseProps & {
+      name?: undefined
+      /** For single select: string | null. For multi select: string[] */
+      value: SelectValue
+      /** Called when selection changes */
+      onChange: (value: SelectValue) => void
+    })
+
+interface SelectDropdownContentProps extends SelectDropdownBaseProps {
+  value: SelectValue
+  onChange: (value: SelectValue) => void
+  error?: string
+}
+
+function SelectDropdownContent({
   options,
   value,
   onChange,
@@ -47,7 +67,9 @@ export function SelectDropdown({
   emptyMessage = "No options found",
   disabled = false,
   className,
-}: SelectDropdownProps) {
+  required = false,
+  error,
+}: SelectDropdownContentProps) {
   const [search, setSearch] = useState("")
   const [open, setOpen] = useState(false)
 
@@ -66,7 +88,7 @@ export function SelectDropdown({
 
   const toggle = (optValue: string) => {
     if (multiple) {
-      const current = value as string[]
+      const current = Array.isArray(value) ? value : []
       onChange(
         current.includes(optValue)
           ? current.filter((v) => v !== optValue)
@@ -92,7 +114,10 @@ export function SelectDropdown({
   return (
     <div className={cn("space-y-2", className)}>
       {label && (
-        <p className="text-sm font-medium leading-none">{label}</p>
+        <p className="text-sm font-medium leading-none">
+          {label}
+          {required && <span className="text-destructive"> *</span>}
+        </p>
       )}
       <DropdownMenu open={open} onOpenChange={setOpen}>
         <DropdownMenuTrigger asChild disabled={disabled}>
@@ -124,7 +149,7 @@ export function SelectDropdown({
                 placeholder={searchPlaceholder}
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="h-7 border-none px-0 shadow-none focus-visible:ring-0"
+                className="h-7 border-none px-2 shadow-none focus-visible:ring-0"
               />
             </div>
           )}
@@ -178,6 +203,33 @@ export function SelectDropdown({
           )}
         </DropdownMenuContent>
       </DropdownMenu>
+      {error && <p className="text-xs text-destructive">{error}</p>}
     </div>
+  )
+}
+
+export function SelectDropdown(props: SelectDropdownProps) {
+  const form = useFormContext()
+
+  if (props.name === undefined) {
+    return <SelectDropdownContent {...props} />
+  }
+
+  const { name, ...selectProps } = props
+  const error = form.formState.errors[name]?.message as string | undefined
+
+  return (
+    <Controller
+      control={form.control}
+      name={name}
+      render={({ field }) => (
+        <SelectDropdownContent
+          {...selectProps}
+          value={(field.value as SelectValue) ?? (selectProps.multiple ? [] : null)}
+          onChange={(value) => field.onChange(value ?? (selectProps.multiple ? [] : ""))}
+          error={error}
+        />
+      )}
+    />
   )
 }
