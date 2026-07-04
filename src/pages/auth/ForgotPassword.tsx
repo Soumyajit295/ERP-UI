@@ -4,7 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { InputField } from "@/customComponent/InputField"
+import { InputField } from "@/customComponent/form-components/InputField"
 import { forgotPasswordSchema, type ForgotPasswordFormData } from "@/lib/validation"
 import { forgetPassword } from "@/services/auth.service"
 

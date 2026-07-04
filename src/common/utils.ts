@@ -1,6 +1,12 @@
+import { useAuthStore } from "@/stores/auth.store"
+
+type QueryValue = string | number | boolean | null | undefined
+type QueryParams = object
+
 interface FetchWithAuthOptions extends Omit<RequestInit, 'body'> {
     skipAuth?: boolean
     body?: unknown
+    query?: QueryParams
 }
 
 export class ApiError extends Error {
@@ -40,7 +46,7 @@ export const fetchWithAuth = async<T>(
     url: string,
     options: FetchWithAuthOptions = {}
 ) => {
-    const {skipAuth = false,headers={},body,method,...restOptions} = options
+    const {skipAuth = false,headers={},body,method,query,...restOptions} = options
 
     const isFormData = body instanceof FormData
     const isJsonBody = !isFormData && typeof body === 'object' && body !== null
@@ -62,7 +68,11 @@ export const fetchWithAuth = async<T>(
         body: finalBody
     }
 
-    let response = await fetch(`${BASE_URL}${url}`,finalOptions)
+    const queryString = buildQueryString(query)
+    const separator = url.includes('?') ? '&' : '?'
+    const finalUrl = queryString ? `${BASE_URL}${url}${separator}${queryString}` : `${BASE_URL}${url}`
+
+    let response = await fetch(finalUrl,finalOptions)
 
     if(response.status === 401 && !skipAuth){
         const newAccessToken = await refreshAccessToken()
@@ -72,7 +82,7 @@ export const fetchWithAuth = async<T>(
             Authorization : `Bearer ${newAccessToken}`
         }
 
-        response = await fetch(`${BASE_URL}${url}`,finalOptions)
+        response = await fetch(finalUrl,finalOptions)
     }
 
     if(!response.ok){
@@ -89,4 +99,27 @@ export const fetchWithAuth = async<T>(
     }
 
     return (await response.json()) as T;
+}
+
+const buildQueryString = (query?: QueryParams) => {
+    if (!query) return ""
+
+    const params = new URLSearchParams()
+
+    Object.entries(query).forEach(([key, value]) => {
+        const values = Array.isArray(value) ? value : [value as QueryValue]
+
+        values.forEach((item) => {
+            if (item === undefined || item === null || item === "") return
+            params.append(key, String(item))
+        })
+    })
+
+    return params.toString()
+}
+
+export const hasPermission = (requiredPermission: string) => {
+    const {user} = useAuthStore()
+
+    return Boolean(user?.permissions?.includes(requiredPermission))
 }

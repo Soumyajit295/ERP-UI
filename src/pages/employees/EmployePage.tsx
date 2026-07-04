@@ -1,41 +1,24 @@
 import { ResponsiveDataTable } from "@/customComponent/data-table"
 import type { ColumnDef, Action } from "@/customComponent/data-table"
-import { CustomSlider } from "@/customComponent/CustomSlider"
 import { PageContainer } from "@/customComponent/PageContainer"
 import { PageHeader } from "@/customComponent/PageHeader"
 import { Pencil, Trash2 } from "lucide-react"
 import { toast } from "sonner"
 import { useState } from "react"
+import { useQuery } from "@tanstack/react-query"
+import { type PaginationState } from "@tanstack/react-table"
+import { deleteUser, getTenantUsers, type UserResponse } from "@/services/user.service"
+import { EmployeeForm } from "./EmployeeForm"
+import { getRolesOptions } from "@/services/role-permission.service"
+import { PERMISSIONS } from "@/common/constants/permissions.constant"
+import { hasPermission } from "@/common/utils"
 
-interface Employee {
-  name: string
-  email: string
-  role: string
-  department: string
-  status: "Active" | "Inactive"
-}
-
-const mockData: Employee[] = [
-  { name: "Alice Johnson", email: "alice@example.com", role: "Developer", department: "Engineering", status: "Active" },
-  { name: "Bob Smith", email: "bob@example.com", role: "Designer", department: "Design", status: "Active" },
-  { name: "Charlie Brown", email: "charlie@example.com", role: "Manager", department: "Engineering", status: "Active" },
-  { name: "Diana Prince", email: "diana@example.com", role: "Analyst", department: "Finance", status: "Inactive" },
-  { name: "Eve Davis", email: "eve@example.com", role: "Developer", department: "Engineering", status: "Active" },
-  { name: "Frank Miller", email: "frank@example.com", role: "Designer", department: "Design", status: "Inactive" },
-  { name: "Grace Lee", email: "grace@example.com", role: "Manager", department: "HR", status: "Active" },
-  { name: "Henry Wilson", email: "henry@example.com", role: "Developer", department: "Engineering", status: "Active" },
-  { name: "Ivy Chen", email: "ivy@example.com", role: "Analyst", department: "Finance", status: "Active" },
-  { name: "Jack Taylor", email: "jack@example.com", role: "Designer", department: "Design", status: "Inactive" },
-  { name: "Kate Anderson", email: "kate@example.com", role: "Developer", department: "Engineering", status: "Active" },
-  { name: "Leo Thompson", email: "leo@example.com", role: "Manager", department: "HR", status: "Active" },
-]
-
-const columns: ColumnDef<Employee>[] = [
+const columns: ColumnDef<UserResponse>[] = [
   {
     id: "name",
     header: "Name",
-    accessorKey: "name",
     meta: { mobileLabel: "Name" },
+    cell: ({ row }) => `${row.original.fname} ${row.original.lname}`,
   },
   {
     id: "email",
@@ -46,53 +29,80 @@ const columns: ColumnDef<Employee>[] = [
   {
     id: "role",
     header: "Role",
-    accessorKey: "role",
+    accessorKey: "roleName",
     meta: { mobileLabel: "Role" },
   },
   {
-    id: "department",
-    header: "Department",
-    accessorKey: "department",
-    meta: { mobileLabel: "Dept" },
-  },
-  {
-    id: "status",
-    header: "Status",
-    accessorKey: "status",
-    meta: { mobileLabel: "Status" },
-    cell: ({ getValue }) => {
-      const value = getValue() as string
-      return (
-        <span
-          className={
-            value === "Active"
-              ? "rounded-full bg-success/15 px-2 py-0.5 text-xs font-medium text-success"
-              : "rounded-full bg-destructive/10 px-2 py-0.5 text-xs font-medium text-destructive"
-          }
-        >
-          {value}
-        </span>
-      )
-    },
-  },
-]
-
-const actions: Action<Employee>[] = [
-  {
-    label: "Edit",
-    icon: Pencil,
-    onClick: (row) => toast.info(`Edit ${row.name}`),
-  },
-  {
-    label: "Delete",
-    icon: Trash2,
-    variant: "destructive",
-    onClick: (row) => toast.error(`Delete ${row.name}`),
+    id: "phone",
+    header: "Phone",
+    accessorKey: "phone",
+    meta: { mobileLabel: "Phone" },
+    cell: ({ getValue }) => getValue() || "-",
   },
 ]
 
 export const EmployePage = () => {
-  const [productForm, setProductForm] = useState(false)
+  const [employeeFormOpen, setEmployeeFormOpen] = useState(false)
+  const [selectedEmployee, setSelectedEmployee] = useState<UserResponse | null>(null)
+  const [pagination, setPagination] = useState<PaginationState>({
+    pageIndex: 0,
+    pageSize: 10,
+  })
+
+  const {data,isFetching,refetch} = useQuery({
+    queryKey: ["tenant-users", pagination.pageIndex, pagination.pageSize],
+    queryFn: () => getTenantUsers({
+      page: pagination.pageIndex + 1,
+      limit: pagination.pageSize,
+    }),
+  })
+
+  const {data: roleOptions} = useQuery({
+    queryKey: ['tenant-roles'],
+    queryFn: getRolesOptions
+  })
+
+
+  const deleteSelectedUser = async(userId: string) => {
+    try {
+      await deleteUser(userId)
+      refetch()
+      toast.success('User deleted successfully')
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to delete user')
+    }
+  }
+
+  const openAddEmployee = () => {
+    setSelectedEmployee(null)
+    setEmployeeFormOpen(true)
+  }
+
+  const onSuccess = () => {
+    setEmployeeFormOpen(false)
+    refetch()
+  }
+
+  const hasDeletePermission = hasPermission(PERMISSIONS.User.Modify)
+
+  const actions: Action<UserResponse>[] = [
+    {
+      label: "Edit",
+      icon: Pencil,
+      onClick: (row) => {
+        setSelectedEmployee(row)
+        setEmployeeFormOpen(true)
+      },
+      permission: hasPermission(PERMISSIONS.User.Modify)
+    },
+    {
+      label: "Delete",
+      icon: Trash2,
+      variant: "destructive",
+      onClick: (row) => deleteSelectedUser(row.userId),
+      permission: (row) => hasDeletePermission && row?.createdBy !== "SYSTEM",
+    },
+  ]
 
   return (
     <PageContainer>
@@ -100,20 +110,26 @@ export const EmployePage = () => {
         pageName="Employees"
         pageSubName="Manage your team members and their roles"
         actionButtonLabel="Add Employee"
-        onActionButtonClick={() => setProductForm(true)}
+        onActionButtonClick={openAddEmployee}
+        addPermission={hasPermission(PERMISSIONS.User.Create)}
       />
       <ResponsiveDataTable
         columns={columns}
-        data={mockData}
-        pageSize={20}
+        data={data?.records || []}
+        loading={isFetching}
+        pageSize={pagination.pageSize}
+        pageCount={data?.meta?.totalPages}
+        pagination={pagination}
+        onPaginationChange={setPagination}
+        manualPagination
         actions={actions}
       />
-      <CustomSlider
-        open={productForm}
-        onOpenChange={() => setProductForm(false)}
-        title="Employee form"
-        cancelLabel="close"
-        onCancel={() => setProductForm(false)}
+      <EmployeeForm
+        open={employeeFormOpen}
+        onOpenChange={setEmployeeFormOpen}
+        employee={selectedEmployee}
+        onSuccess={onSuccess}
+        roleOptions={roleOptions || []}
       />
     </PageContainer>
   )

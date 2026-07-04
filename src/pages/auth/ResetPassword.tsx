@@ -1,11 +1,10 @@
-import { useState } from "react"
-import { Link, useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { useForm, FormProvider } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { InputField } from "@/customComponent/InputField"
+import { InputField } from "@/customComponent/form-components/InputField"
 import { resetPasswordSchema, type ResetPasswordFormData } from "@/lib/validation"
 import { resetPassword } from "@/services/auth.service"
 
