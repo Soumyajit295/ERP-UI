@@ -9,11 +9,11 @@ export function AppLayout() {
 
   return (
     <SidebarContext.Provider value={{ open, setOpen, toggle: () => setOpen((prev) => !prev) }}>
-      <div className="flex min-h-svh">
+      <div className="flex h-svh overflow-hidden">
         <AppSidebar />
-        <div className="flex flex-1 flex-col">
+        <div className="flex min-w-0 flex-1 flex-col">
           <Navbar />
-          <main className="min-h-0 flex-1 p-2">
+          <main className="flex min-h-0 flex-1 flex-col overflow-hidden p-2">
             <Outlet />
           </main>
         </div>

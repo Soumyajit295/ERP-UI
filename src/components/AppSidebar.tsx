@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { ChevronDown, PanelLeftClose, PanelLeft, Sun, Moon, LogOut, Building2 } from "lucide-react"
-import { NavLink, useNavigate } from "react-router-dom"
+import { ChevronDown, PanelLeftClose, PanelLeft, Sun, Moon, Building2 } from "lucide-react"
+import { NavLink } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { useSidebar } from "@/hooks/useSidebar"
 import { useTheme } from "@/hooks/useTheme"

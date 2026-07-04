@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import {
   Sheet,
   SheetContent,
@@ -20,7 +19,7 @@ interface CustomSliderProps {
   onCancel?: () => void
   loading?: boolean
   side?: "top" | "bottom" | "left" | "right"
-  children: React.ReactNode
+  children?: React.ReactNode
 }
 
 export function CustomSlider({
