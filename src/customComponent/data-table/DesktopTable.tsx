@@ -9,7 +9,7 @@ interface DesktopTableProps<TData> {
 
 export function DesktopTable<TData>({ table, actions }: DesktopTableProps<TData>) {
   return (
-    <div className="min-w-full rounded-xl border border-border">
+    <div className="min-w-full rounded-xl">
       <table className="w-full min-w-max">
         <thead>
           {table.getHeaderGroups().map((headerGroup) => (

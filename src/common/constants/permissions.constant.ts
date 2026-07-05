@@ -39,4 +39,9 @@ export const PERMISSIONS = {
     Modify: "user_modify",
     Read: "user_read",
   },
+  Role: {
+    Create: "role_create",
+    Modify: "role_modify",
+    Read: "role_read",
+  },
 } as const;

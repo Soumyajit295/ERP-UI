@@ -8,6 +8,7 @@ import Dashboard from "@/pages/app/Dashboard"
 import type { ReactNode } from "react"
 import { ProtectedRoute, type ProtectedRouteProps } from "./customComponent/ProtectedRoute"
 import { EmployePage } from "./pages/employees/EmployePage"
+import { RolePermissionPage } from "./pages/system/RolePermissionPage"
 
 export function AppRouter() {
 
@@ -25,6 +26,7 @@ export function AppRouter() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/employee" element={<EmployePage/>}/>
+        <Route path="/role-permission" element={<RolePermissionPage/>}/>
       </Route>
     </Routes>
   )
