@@ -1,4 +1,4 @@
-import { type LucideIcon, LayoutDashboard, Users, Package, Truck, ShoppingCart, Warehouse, UserCheck, FileText, Wallet, Receipt, CreditCard } from "lucide-react"
+import { type LucideIcon, LayoutDashboard, Users, Package, Truck, ShoppingCart, Warehouse, UserCheck, FileText, Wallet, Receipt, CreditCard, Shield } from "lucide-react"
 
 export type SidebarMenu = {
   label: string
@@ -83,6 +83,16 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
         label: "Payments",
         icon: CreditCard,
         path: "#"
+      }
+    ]
+  },
+  {
+    label: "System",
+    items: [
+      {
+        label: "Role Permission",
+        icon: Shield,
+        path: "/role-permission",
       }
     ]
   }
