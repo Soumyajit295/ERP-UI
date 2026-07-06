@@ -1,11 +1,11 @@
 import { useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
-import { useForm, FormProvider } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { InputField } from "@/customComponent/form-components/InputField"
+import { FormInputField } from "@/formComponent/FormInputField"
 import { signin } from "@/services/auth.service"
 import { signinSchema, type SigninFormData } from "@/lib/validation"
 
@@ -15,6 +15,7 @@ export default function SignIn() {
   const form = useForm<SigninFormData>({
     resolver: zodResolver(signinSchema),
   })
+  const { control } = form
 
   async function onSubmit(data: SigninFormData) {
     setLoading(true)
@@ -37,30 +38,28 @@ export default function SignIn() {
           <CardTitle>Sign In</CardTitle>
           <CardDescription>Enter your credentials to access your account</CardDescription>
         </CardHeader>
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent className="space-y-4">
-              <InputField name="email" label="Email" required type="email" placeholder="john@example.com" />
-              <InputField name="password" label="Password" required type="password" placeholder="••••••••" />
-              <div className="text-right">
-                <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-success hover:underline">
-                  Forgot password?
-                </Link>
-              </div>
-            </CardContent>
-            <CardFooter className="flex-col gap-4">
-              <Button type="submit" variant="success" className="w-full" loading={loading}>
-                {loading ? "Signing in..." : "Sign In"}
-              </Button>
-              <p className="text-center text-sm text-muted-foreground">
-                Don&apos;t have an account?{" "}
-                <Link to="/register" className="font-medium text-success hover:underline">
-                  Register
-                </Link>
-              </p>
-            </CardFooter>
-          </form>
-        </FormProvider>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="space-y-4">
+            <FormInputField control={control} name="email" label="Email" required type="email" placeholder="john@example.com" />
+            <FormInputField control={control} name="password" label="Password" required type="password" placeholder="••••••••" />
+            <div className="text-right">
+              <Link to="/forgot-password" className="text-xs text-muted-foreground hover:text-success hover:underline">
+                Forgot password?
+              </Link>
+            </div>
+          </CardContent>
+          <CardFooter className="flex-col gap-4">
+            <Button type="submit" variant="success" className="w-full" loading={loading}>
+              {loading ? "Signing in..." : "Sign In"}
+            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              Don&apos;t have an account?{" "}
+              <Link to="/register" className="font-medium text-success hover:underline">
+                Register
+              </Link>
+            </p>
+          </CardFooter>
+        </form>
       </Card>
     </div>
   )

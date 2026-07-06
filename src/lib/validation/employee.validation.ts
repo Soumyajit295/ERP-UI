@@ -5,7 +5,7 @@ export const employeeFormSchema = z.object({
   lname: z.string().min(1, "Last name is required"),
   email: z.string().min(1, "Email is required").email("Invalid email format"),
   phone: z.string().min(1, "Phone is required"),
-  password: z.string().optional(),
+  password: z.string().min(1, "Password is required"),
   roleId: z.string().min(1, "Role is required"),
 })
 
