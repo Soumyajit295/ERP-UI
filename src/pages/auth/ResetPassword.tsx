@@ -1,10 +1,10 @@
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
-import { useForm, FormProvider } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { Button } from "@/components/ui/button"
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card"
-import { InputField } from "@/customComponent/form-components/InputField"
+import { FormInputField } from "@/formComponent/FormInputField"
 import { resetPasswordSchema, type ResetPasswordFormData } from "@/lib/validation"
 import { resetPassword } from "@/services/auth.service"
 
@@ -12,7 +12,7 @@ export default function ResetPassword() {
   const form = useForm<ResetPasswordFormData>({
     resolver: zodResolver(resetPasswordSchema),
   })
-  const {formState: {isSubmitting}} = form
+  const {formState: {isSubmitting}, control} = form
   const [searchParams] = useSearchParams()
   const token = searchParams.get('token')
   const navigate = useNavigate()
@@ -41,24 +41,22 @@ export default function ResetPassword() {
           <CardTitle>Reset password</CardTitle>
           <CardDescription>Enter your new password</CardDescription>
         </CardHeader>
-        <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>
-            <CardContent className="space-y-4">
-              <InputField name="password" label="New Password" required type="password" placeholder="At least 5 characters" />
-            </CardContent>
-            <CardFooter className="flex-col gap-4">
-              <Button type="submit" variant="success" className="w-full" loading={isSubmitting}>
-                {isSubmitting ? "Resetting..." : "Reset Password"}
-              </Button>
-              <p className="text-center text-sm text-muted-foreground">
-                Remember your password?{" "}
-                <Link to="/signin" className="font-medium text-success hover:underline">
-                  Sign in
-                </Link>
-              </p>
-            </CardFooter>
-          </form>
-        </FormProvider>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+          <CardContent className="space-y-4">
+            <FormInputField control={control} name="password" label="New Password" required type="password" placeholder="At least 5 characters" />
+          </CardContent>
+          <CardFooter className="flex-col gap-4">
+            <Button type="submit" variant="success" className="w-full" loading={isSubmitting}>
+              {isSubmitting ? "Resetting..." : "Reset Password"}
+            </Button>
+            <p className="text-center text-sm text-muted-foreground">
+              Remember your password?{" "}
+              <Link to="/signin" className="font-medium text-success hover:underline">
+                Sign in
+              </Link>
+            </p>
+          </CardFooter>
+        </form>
       </Card>
     </div>
   )

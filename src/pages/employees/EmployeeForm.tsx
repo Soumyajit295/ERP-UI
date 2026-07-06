@@ -1,12 +1,12 @@
 import { useEffect } from "react"
-import { FormProvider, useForm } from "react-hook-form"
+import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { toast } from "sonner"
 import { CustomSlider } from "@/customComponent/CustomSlider"
-import { InputField } from "@/customComponent/form-components/InputField"
+import { FormInputField } from "@/formComponent/FormInputField"
 import { employeeFormSchema, type EmployeeFormValues } from "@/lib/validation/employee.validation"
 import { createUser, updateUser, type UserResponse } from "@/services/user.service"
-import { SelectDropdown } from "@/customComponent/form-components/SelectDropdown"
+import { FormInputSelect } from "@/formComponent/FormInputSelect"
 
 interface EmployeeFormProps {
   open: boolean
@@ -39,7 +39,7 @@ export function EmployeeForm({
     defaultValues,
   })
 
-  const { formState: { isSubmitting }, reset } = form
+  const { formState: { isSubmitting }, reset, control } = form
 
   useEffect(() => {
     if (!open) return
@@ -59,16 +59,8 @@ export function EmployeeForm({
   }, [employee, open, reset])
 
   const handleSubmit = async (values: EmployeeFormValues) => {
-    const password = values.password ?? ""
-
-    if (!isEdit && !password) {
-      form.setError("password", { message: "Password is required" })
-      return
-    }
-
-    if (!isEdit && password.length < 5) {
-      form.setError("password", { message: "Password must be at least 5 characters" })
-      return
+    if (isEdit) {
+      form.clearErrors("password")
     }
 
     try {
@@ -86,7 +78,7 @@ export function EmployeeForm({
           lname: values.lname,
           email: values.email,
           phone: values.phone,
-          password,
+          password: values.password,
           roleId: values.roleId,
         })
         toast.success("Employee created successfully")
@@ -110,26 +102,16 @@ export function EmployeeForm({
       onSubmit={form.handleSubmit(handleSubmit)}
       onCancel={() => form.reset(defaultValues)}
     >
-      <FormProvider {...form}>
-        <form className="space-y-4 pb-4 pt-1" onSubmit={form.handleSubmit(handleSubmit)}>
-          <InputField name="fname" label="First name" required placeholder="Enter First Name" />
-          <InputField name="lname" label="Last name" required placeholder="Enter Last Name"/>
-          <InputField name="email" label="Email" required placeholder="Enter Email" disabled={isEdit}/>
-          <InputField name="phone" label="Phone" required placeholder="Enter Phone Number"/>
-          {!isEdit && (
-            <InputField name="password" label="Password" type="password" required placeholder="Enter Password"/>
-          )}
-          <SelectDropdown
-            name="roleId"
-            options={roleOptions}
-            label="Role ID"
-            placeholder="Select role"
-            searchable
-            searchPlaceholder="Search role"
-            required
-          />
-        </form>
-      </FormProvider>
+      <form className="space-y-4 pb-4 pt-1" onSubmit={form.handleSubmit(handleSubmit)}>
+        <FormInputField control={control} name="fname" label="First name" required placeholder="Enter First Name" />
+        <FormInputField control={control} name="lname" label="Last name" required placeholder="Enter Last Name"/>
+        <FormInputField control={control} name="email" label="Email" required placeholder="Enter Email" disabled={isEdit}/>
+        <FormInputField control={control} name="phone" label="Phone" required placeholder="Enter Phone Number"/>
+        {!isEdit && (
+          <FormInputField control={control} name="password" label="Password" type="password" required placeholder="Enter Password"/>
+        )}
+        <FormInputSelect control={control} name="roleId" label="Role ID" options={roleOptions} placeholder="Select role" required />
+      </form>
     </CustomSlider>
   )
 }
