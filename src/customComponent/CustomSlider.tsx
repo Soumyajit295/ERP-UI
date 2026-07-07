@@ -37,13 +37,13 @@ export function CustomSlider({
 }: CustomSliderProps) {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetContent side={side} className="flex flex-col overflow-y-auto">
-        <SheetHeader className="mb-0">
+      <SheetContent side={side} className="flex flex-col h-full">
+        <SheetHeader className="shrink-0">
           <SheetTitle>{title}</SheetTitle>
           {description && <SheetDescription>{description}</SheetDescription>}
         </SheetHeader>
-        <div className="min-h-0 flex-1">{children}</div>
-        <SheetFooter>
+        <div className="min-h-0 flex-1 overflow-y-auto">{children}</div>
+        <SheetFooter className="shrink-0">
           <CustomButton label={cancelLabel} onClick={() => { onCancel?.(); onOpenChange(false) }} className="px-5"/>
           <CustomButton label={submitLabel} onClick={onSubmit} loading={loading} className="px-5" />
         </SheetFooter>

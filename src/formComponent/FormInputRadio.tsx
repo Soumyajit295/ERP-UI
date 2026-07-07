@@ -9,7 +9,7 @@ type RadioOption = {
 };
 
 type FormInputRadioProps<T extends FieldValues> = {
-  control: Control<T>;
+  control: Control<T, any, any>;
   name: FieldPath<T>;
   label?: string;
   required?: boolean;
