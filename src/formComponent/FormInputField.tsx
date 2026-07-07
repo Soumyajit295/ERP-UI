@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
 type FormInputFieldProps<T extends FieldValues> = {
-  control: Control<T>;
+  control: Control<T, any, any>;
   name: FieldPath<T>;
   label?: string;
   required?: boolean;

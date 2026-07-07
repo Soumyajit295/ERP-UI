@@ -1,43 +1,44 @@
 import { type Control, Controller, type FieldPath, type FieldValues } from "react-hook-form";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-type FormInputCheckboxProps<T extends FieldValues> = {
+type FormTextAreaProps<T extends FieldValues> = {
   control: Control<T, any, any>;
   name: FieldPath<T>;
   label?: string;
   required?: boolean;
   extraClassName?: string;
   containerClassName?: string;
-};
+} & React.ComponentProps<"textarea">;
 
-export function FormInputCheckbox<T extends FieldValues>({
+export function FormTextArea<T extends FieldValues>({
   control,
   name,
   label,
   required,
   extraClassName,
   containerClassName,
-}: FormInputCheckboxProps<T>) {
+  ...props
+}: FormTextAreaProps<T>) {
   return (
     <Controller
       control={control}
       name={name}
       render={({ field, fieldState }) => (
-        <div className={cn("flex items-center gap-2", containerClassName)}>
-          <Checkbox
-            id={name}
-            className={extraClassName}
-            checked={field.value ?? false}
-            onCheckedChange={field.onChange}
-          />
+        <div className={cn("space-y-2", containerClassName)}>
           {label && (
             <Label htmlFor={name}>
               {label}
               {required && <span className="text-destructive"> *</span>}
             </Label>
           )}
+          <Textarea
+            id={name}
+            className={extraClassName}
+            {...field}
+            {...props}
+          />
           {fieldState.error && (
             <p className="text-xs text-destructive">{fieldState.error.message}</p>
           )}

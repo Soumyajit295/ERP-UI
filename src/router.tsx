@@ -9,6 +9,7 @@ import type { ReactNode } from "react"
 import { ProtectedRoute, type ProtectedRouteProps } from "./customComponent/ProtectedRoute"
 import { EmployePage } from "./pages/employees/EmployePage"
 import { RolePermissionPage } from "./pages/system/RolePermissionPage"
+import { ProductPage } from "./pages/products/ProductPage"
 
 export function AppRouter() {
 
@@ -27,6 +28,7 @@ export function AppRouter() {
         <Route path="/" element={<Navigate to="/dashboard" replace />} />
         <Route path="/employee" element={<EmployePage/>}/>
         <Route path="/role-permission" element={<RolePermissionPage/>}/>
+        <Route path="/products" element={<ProductPage/>}/>
       </Route>
     </Routes>
   )
