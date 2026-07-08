@@ -10,6 +10,7 @@ import { ProtectedRoute, type ProtectedRouteProps } from "./customComponent/Prot
 import { EmployePage } from "./pages/employees/EmployePage"
 import { RolePermissionPage } from "./pages/system/RolePermissionPage"
 import { ProductPage } from "./pages/products/ProductPage"
+import { CategoryPage } from "./pages/categories/CategoryPage"
 
 export function AppRouter() {
 
@@ -29,6 +30,7 @@ export function AppRouter() {
         <Route path="/employee" element={<EmployePage/>}/>
         <Route path="/role-permission" element={<RolePermissionPage/>}/>
         <Route path="/products" element={<ProductPage/>}/>
+        <Route path="/categories" element={<CategoryPage/>}/>
       </Route>
     </Routes>
   )

@@ -1,4 +1,5 @@
 import { useAuthStore } from "@/stores/auth.store"
+import dayjs from 'dayjs'
 
 type QueryValue = string | number | boolean | null | undefined
 type QueryParams = object
@@ -123,3 +124,7 @@ export const hasPermission = (requiredPermission: string) => {
 
     return Boolean(user?.permissions?.includes(requiredPermission))
 }
+
+export const formatDate = (rawCreatedAt: string): string => {
+  return dayjs(rawCreatedAt).format("DD/MM/YY");
+};
