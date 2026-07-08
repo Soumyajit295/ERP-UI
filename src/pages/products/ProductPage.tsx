@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { type PaginationState } from "@tanstack/react-table";
 import { Pencil, Trash2, List } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import type { ColumnDef, Action } from "@/customComponent/data-table";
 import { ResponsiveDataTable } from "@/customComponent/data-table";
@@ -18,6 +17,8 @@ import { PERMISSIONS } from "@/common/constants/permissions.constant";
 import { hasPermission } from "@/common/utils";
 import { ProductForm } from "./ProductForm";
 import { getCategoryOptions } from "@/services/products.service";
+import { CustomButton } from "@/customComponent/CustomButton";
+import { useNavigate } from "react-router-dom";
 
 const columns: ColumnDef<ProductRecord>[] = [
   {
@@ -91,6 +92,7 @@ export const ProductPage = () => {
     pageIndex: 0,
     pageSize: 10,
   });
+  const navigate = useNavigate()
 
   const { data, isFetching, refetch } = useQuery({
     queryKey: ["products", pagination.pageIndex, pagination.pageSize],
@@ -161,10 +163,14 @@ export const ProductPage = () => {
         onActionButtonClick={openAddProduct}
         addPermission={hasPermission(PERMISSIONS.Product.Create)}
         extraButton={
-          <Button variant="outline" size="sm" onClick={() => {}}>
-            <List className="size-4" />
-            Categories
-          </Button>
+          <CustomButton 
+            variant="outline" 
+            size="sm" 
+            onClick={() => navigate('/categories')} 
+            className="p-5" 
+            label="Categories" 
+            icon={<List className="size-4" />}
+          />
         }
       />
       <ResponsiveDataTable<ProductRecord>

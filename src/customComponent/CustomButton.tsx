@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 
 interface CustomButtonProps extends React.ComponentProps<typeof Button> {
-  label: string
+  label?: string
   loading?: boolean
   loadLabel?: string
   icon?: React.ReactNode

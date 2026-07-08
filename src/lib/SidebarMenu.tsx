@@ -33,7 +33,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
         icon: Package,
         children: [
           { label: "All Products", path: "/products"},
-          { label: "Categories", path: "#"}
+          { label: "Categories", path: "/categories"}
         ]
       },
       {
