@@ -1,5 +1,5 @@
 import { PERMISSIONS } from "@/common/constants/permissions.constant";
-import { hasPermission } from "@/common/utils";
+import { formatDate, hasPermission } from "@/common/utils";
 import { CustomButton } from "@/customComponent/CustomButton";
 import { ResponsiveDataTable, type Action, type ColumnDef } from "@/customComponent/data-table";
 import { PageContainer } from "@/customComponent/PageContainer";
@@ -36,7 +36,11 @@ const columns: ColumnDef<CategoryRecord>[] = [
         id: "createdAt",
         header: "Created",
         accessorKey: "createdAt",
-        meta: {mobileLabel: "Created"}
+        meta: {mobileLabel: "Created"},
+        cell: ({getValue}) => {
+            const value = getValue() as string
+            return formatDate(value)
+        }
     }
 ]
 
