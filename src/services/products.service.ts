@@ -19,6 +19,28 @@ export interface ProductRecord {
   categoryId: string;
 }
 
+export interface Product {
+  productId: string;
+  productName: string;
+  categoryId: string;
+  categoryName: string;
+  sku: string;
+  barcode: string;
+  costPrice: string;
+  sellingPrice: string;
+  description: string;
+  createdAt: string;
+  updatedAt: string;
+  status: string;
+  profitPerUnit: string;
+  profitMargin: string;
+  inventoryDetails: {
+    warehouseName: string;
+    quantity: number;
+    reservedQuantity: number;
+  }[];
+}
+
 export interface ProductDetailsResponse extends ProductRecord {
   description: string
 }
@@ -80,7 +102,7 @@ export const getProducts = async(getProductQueryDto: GetProductsQuery): Promise<
     return await fetchWithAuth('products',{query: getProductQueryDto})
 }
 
-export const getProductDetails = async(productId: string): Promise<ProductDetailsResponse> => {
+export const getProductDetails = async(productId: string): Promise<Product> => {
     return await fetchWithAuth(`products/${productId}`)
 }
 

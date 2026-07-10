@@ -4,7 +4,7 @@ import { CustomButton } from "./CustomButton"
 interface PageHeaderProps {
   pageName: string
   pageSubName?: string
-  actionButtonLabel: string
+  actionButtonLabel?: string
   onActionButtonClick?: () => void
   extraButton?: React.ReactNode
   addPermission?: boolean
@@ -13,13 +13,13 @@ interface PageHeaderProps {
 export function PageHeader({ pageName, pageSubName, actionButtonLabel, onActionButtonClick, extraButton , addPermission}: PageHeaderProps) {
   return (
     <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
-      <div>
-        <h1 className="text-xl font-semibold">{pageName}</h1>
+      <div className="min-w-0">
+        <h1 className="truncate text-xl font-semibold">{pageName}</h1>
         {pageSubName && (
           <p className="mt-0.5 text-sm text-muted-foreground">{pageSubName}</p>
         )}
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center gap-2">
         {extraButton}
         {addPermission && (
           <CustomButton
