@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import {
   getCoreRowModel,
   getPaginationRowModel,
@@ -8,24 +7,8 @@ import { Loader2 } from "lucide-react"
 import { DataTablePagination } from "./DataTablePagination"
 import { DesktopTable } from "./DesktopTable"
 import { MobileCardList } from "./MobileCardList"
+import { useIsMobile } from "@/hooks/useIsMobile"
 import type { ResponsiveDataTableProps } from "./types"
-
-function useIsMobile(breakpoint: number) {
-  const [isMobile, setIsMobile] = useState(() =>
-    typeof window !== "undefined"
-      ? window.matchMedia(`(max-width: ${breakpoint}px)`).matches
-      : false,
-  )
-
-  useEffect(() => {
-    const mql = window.matchMedia(`(max-width: ${breakpoint}px)`)
-    const handler = (e: MediaQueryListEvent) => setIsMobile(e.matches)
-    mql.addEventListener("change", handler)
-    return () => mql.removeEventListener("change", handler)
-  }, [breakpoint])
-
-  return isMobile
-}
 
 export function ResponsiveDataTable<TData>({
   columns,

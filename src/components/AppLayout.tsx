@@ -1,11 +1,20 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Outlet } from "react-router-dom"
 import { SidebarContext } from "@/hooks/useSidebar"
 import { AppSidebar } from "@/components/AppSidebar"
 import { Navbar } from "@/components/Navbar"
 
+const SIDEBAR_KEY = "sidebar-open"
+
 export function AppLayout() {
-  const [open, setOpen] = useState(true)
+  const [open, setOpen] = useState(() => {
+    const stored = localStorage.getItem(SIDEBAR_KEY)
+    return stored !== null ? stored === "true" : true
+  })
+
+  useEffect(() => {
+    localStorage.setItem(SIDEBAR_KEY, String(open))
+  }, [open])
 
   return (
     <SidebarContext.Provider value={{ open, setOpen, toggle: () => setOpen((prev) => !prev) }}>

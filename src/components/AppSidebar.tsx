@@ -1,9 +1,10 @@
 import { useState } from "react"
-import { ChevronDown, PanelLeftClose, PanelLeft, Sun, Moon, Building2 } from "lucide-react"
+import { ChevronDown, PanelLeftClose, PanelLeft, Sun, Moon, Building2, Menu } from "lucide-react"
 import { NavLink } from "react-router-dom"
 import { cn } from "@/lib/utils"
 import { useSidebar } from "@/hooks/useSidebar"
 import { useTheme } from "@/hooks/useTheme"
+import { useIsMobile } from "@/hooks/useIsMobile"
 import { Button } from "@/components/ui/button"
 import { sidebarMenuGroups, type SidebarMenu } from "@/lib/SidebarMenu"
 import { useAuthStore } from "@/stores/auth.store"
@@ -91,103 +92,131 @@ export function AppSidebar() {
   const { open, toggle } = useSidebar()
   const { theme, toggleTheme } = useTheme()
   const {user} = useAuthStore()
+  const isMobile = useIsMobile()
 
   return (
-    <aside
-      data-state={open ? "expanded" : "collapsed"}
-      className={cn(
-        "flex h-dvh flex-col border-r border-border bg-sidebar transition-[width] duration-300 ease-in-out",
-        open ? "w-64" : "w-16"
+    <>
+      {isMobile && !open && (
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={toggle}
+          className="fixed left-3 top-3 z-50 h-10 w-10 border border-border bg-background shadow-md"
+        >
+          <Menu className="h-5 w-5" />
+        </Button>
       )}
-    >
-      <div className="border-b border-border p-2">
-        {open ? (
-          <div className="p-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3 overflow-hidden">
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500">
-                  <Building2 className="h-6 w-6"/>
+
+      {isMobile && open && (
+        <div
+          className="fixed inset-0 z-40 bg-black/50"
+          onClick={toggle}
+        />
+      )}
+
+      <aside
+        data-state={open ? "expanded" : "collapsed"}
+        className={cn(
+          "flex h-dvh flex-col border-r border-border bg-sidebar transition-[width] duration-300 ease-in-out",
+          isMobile
+            ? cn(
+                "fixed inset-y-0 left-0 z-50",
+                open ? "w-full" : "w-0 overflow-hidden border-0"
+              )
+            : cn(
+                open ? "w-64" : "w-16"
+              )
+        )}
+      >
+        <div className="border-b border-border p-2">
+          {open ? (
+            <div className="p-3">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3 overflow-hidden">
+                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-500">
+                    <Building2 className="h-6 w-6"/>
+                  </div>
+
+                  <div className="min-w-0">
+                    <h2 className="truncate text-sm font-semibold ">
+                      {user?.companyName}
+                    </h2>
+
+                    <p className="truncate text-xs">
+                      Enterprise ERP
+                    </p>
+                  </div>
                 </div>
 
-                <div className="min-w-0">
-                  <h2 className="truncate text-sm font-semibold ">
-                    {user?.companyName}
-                  </h2>
-
-                  <p className="truncate text-xs">
-                    Enterprise ERP
-                  </p>
-                </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={toggle}
+                  className="text-zinc-400 hover:bg-zinc-800 hover:text-white"
+                >
+                  <PanelLeftClose className="h-4 w-4" />
+                </Button>
               </div>
-
+            </div>
+          ) : (
+            <div className="flex flex-col items-center gap-2">
               <Button
                 variant="ghost"
                 size="icon"
                 onClick={toggle}
-                className="text-zinc-400 hover:bg-zinc-800 hover:text-white"
               >
-                <PanelLeftClose className="h-4 w-4" />
+                <PanelLeft className="h-4 w-4" />
               </Button>
             </div>
-          </div>
-        ) : (
-          <div className="flex flex-col items-center gap-2">
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={toggle}
-            >
-              <PanelLeft className="h-4 w-4" />
-            </Button>
-          </div>
-        )}
-      </div>
+          )}
+        </div>
 
-      <nav className="flex flex-1 flex-col gap-6 overflow-y-auto px-2 py-3">
-        {sidebarMenuGroups.map((group, idx) => (
-          <div key={idx}>
-            {group.label && open && (
-              <p className="px-3 pb-2 text-xs uppercase tracking-wider text-muted-foreground font-bold">
-                {group.label}
-              </p>
+        <nav className="flex flex-1 flex-col gap-6 overflow-y-auto px-2 py-3">
+          {sidebarMenuGroups.map((group, idx) => (
+            <div key={idx}>
+              {group.label && open && (
+                <p className="px-3 pb-2 text-xs uppercase tracking-wider text-muted-foreground font-bold">
+                  {group.label}
+                </p>
+              )}
+
+              <div className="space-y-1">
+                {group.items.map((item) => (
+                  <SidebarMenuItem
+                    key={item.label}
+                    item={item}
+                    collapsed={!open}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
+        </nav>
+
+        <div className="border-t border-border p-2 space-y-2">
+          <Button
+            variant="ghost"
+            size={open ? "default" : "icon"}
+            onClick={toggleTheme}
+            className={cn(
+              "w-full justify-start gap-3 cursor-pointer",
+              open ? "px-3" : "justify-center px-0"
+            )}
+          >
+            {theme === "dark" ? (
+              <Sun className="h-4 w-4 shrink-0" />
+            ) : (
+              <Moon className="h-4 w-4 shrink-0" />
             )}
 
-            <div className="space-y-1">
-              {group.items.map((item) => (
-                <SidebarMenuItem
-                  key={item.label}
-                  item={item}
-                  collapsed={!open}
-                />
-              ))}
-            </div>
-          </div>
-        ))}
-      </nav>
-
-      <div className="border-t border-border p-2 space-y-2">
-        <Button
-          variant="ghost"
-          size={open ? "default" : "icon"}
-          onClick={toggleTheme}
-          className={cn(
-            "w-full justify-start gap-3 cursor-pointer",
-            open ? "px-3" : "justify-center px-0"
-          )}
-        >
-          {theme === "dark" ? (
-            <Sun className="h-4 w-4 shrink-0" />
-          ) : (
-            <Moon className="h-4 w-4 shrink-0" />
-          )}
-
-          {open && (
-            <span>
-              {theme === "dark" ? "Light mode" : "Dark mode"}
-            </span>
-          )}
-        </Button>
-      </div>
-    </aside>
+            {open && (
+              <span>
+                {theme === "dark" ? "Light mode" : "Dark mode"}
+              </span>
+            )}
+          </Button>
+        </div>
+      </aside>
+    </>
   );
 }

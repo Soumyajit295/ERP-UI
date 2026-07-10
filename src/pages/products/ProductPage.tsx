@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { type PaginationState } from "@tanstack/react-table";
-import { Pencil, Trash2, List } from "lucide-react";
+import { Pencil, Trash2, List, Eye } from "lucide-react";
 import { toast } from "sonner";
 import type { ColumnDef, Action } from "@/customComponent/data-table";
 import { ResponsiveDataTable } from "@/customComponent/data-table";
@@ -136,6 +136,14 @@ export const ProductPage = () => {
   };
 
   const actions: Action<ProductRecord>[] = [
+    {
+      label: "View Details",
+      icon: Eye,
+      onClick: (row) => {
+        navigate(`/products/${row.productId}`)
+      },
+      permission: hasPermission(PERMISSIONS.Product.Read),
+    },
     {
       label: "Edit",
       icon: Pencil,
