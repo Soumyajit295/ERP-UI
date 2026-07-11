@@ -39,7 +39,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
       {
         label: "Suppliers",
         icon: Truck,
-        path: "#",
+        path: "/suppliers",
       },
       {
         label: "Purchases",

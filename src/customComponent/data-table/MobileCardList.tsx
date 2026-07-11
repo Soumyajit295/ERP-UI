@@ -29,7 +29,7 @@ export function MobileCardList<TData>({ table, actions }: MobileCardListProps<TD
                         <span className="min-w-20 shrink-0 text-xs font-medium text-muted-foreground">
                           {label}
                         </span>
-                        <span className="text-sm">
+                        <span className="min-w-0 flex-1 text-sm break-all">
                           {flexRender(cell.column.columnDef.cell, cell.getContext())}
                         </span>
                       </div>
