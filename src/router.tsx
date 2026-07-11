@@ -11,7 +11,9 @@ import { EmployePage } from "./pages/employees/EmployePage"
 import { RolePermissionPage } from "./pages/system/RolePermissionPage"
 import { ProductPage } from "./pages/products/ProductPage"
 import { CategoryPage } from "./pages/categories/CategoryPage"
+import { SupplierPage } from "./pages/suppliers/SupplierPage"
 import { ProductDetails } from "./pages/products/ProductDetails"
+import { SupplierDetails } from "./pages/suppliers/SupplierDetail"
 
 export function AppRouter() {
 
@@ -33,6 +35,8 @@ export function AppRouter() {
         <Route path="/products" element={<ProductPage/>}/>
         <Route path="/products/:productId" element={<ProductDetails/>}/>
         <Route path="/categories" element={<CategoryPage/>}/>
+        <Route path="/suppliers" element={<SupplierPage/>}/>
+        <Route path="/suppliers/:supplierId" element={<SupplierDetails/>}/>
       </Route>
     </Routes>
   )

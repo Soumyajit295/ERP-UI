@@ -5,7 +5,7 @@ interface StatsCardProps {
   title: string;
   value: string;
   subtitle?: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   iconClassName?: string;
   badge?: React.ReactNode;
 }
@@ -23,7 +23,7 @@ export function StatsCard({
       <CardContent className="p-6">
         <div className="flex items-start justify-between">
           <span>{title}</span>
-          <Icon className={iconClassName} />
+          {Icon && <Icon className={iconClassName} />}
         </div>
 
         <div className="mt-8">
