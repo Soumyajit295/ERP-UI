@@ -90,7 +90,7 @@ export const getSuppliers = async(getSupplierDto: GetSupplierQueryDto): Promise<
 }
 
 export const getSupplierOptions = async(): Promise<SupplierOption[]> => {
-    return await fetchWithAuth('suupliers/options')
+    return await fetchWithAuth('suppliers/options')
 }
 
 export const getSupplierDetails = async(supplierId: string): Promise<SupplierDetails> => {

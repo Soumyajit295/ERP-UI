@@ -107,7 +107,7 @@ export const getProductDetails = async(productId: string): Promise<Product> => {
 }
 
 export const getProductOptions = async(): Promise<ProductOptions> => {
-    return await fetchWithAuth('products/option')
+    return await fetchWithAuth('products/options')
 }
 
 export const updateProduct = async(productId: string,payload: UpdateProductRequestDto): Promise<{message: string}> => {

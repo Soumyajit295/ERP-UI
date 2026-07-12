@@ -8,6 +8,7 @@ interface FetchWithAuthOptions extends Omit<RequestInit, 'body'> {
     skipAuth?: boolean
     body?: unknown
     query?: QueryParams
+    responseType?: "json" | "blob"
 }
 
 export class ApiError extends Error {
@@ -47,7 +48,7 @@ export const fetchWithAuth = async<T>(
     url: string,
     options: FetchWithAuthOptions = {}
 ) => {
-    const {skipAuth = false,headers={},body,method,query,...restOptions} = options
+    const {skipAuth = false,headers={},body,method,query,responseType = "json",...restOptions} = options
 
     const isFormData = body instanceof FormData
     const isJsonBody = !isFormData && typeof body === 'object' && body !== null
@@ -99,6 +100,10 @@ export const fetchWithAuth = async<T>(
         return undefined as T;
     }
 
+    if (responseType === "blob") {
+        return (await response.blob()) as T;
+    }
+
     return (await response.json()) as T;
 }
 
@@ -125,6 +130,6 @@ export const hasPermission = (requiredPermission: string) => {
     return Boolean(user?.permissions?.includes(requiredPermission))
 }
 
-export const formatDate = (rawCreatedAt: string): string => {
-  return dayjs(rawCreatedAt).format("DD/MM/YY");
+export const formatDate = (rawCreatedAt: string, format: string = "DD/MM/YY"): string => {
+  return dayjs(rawCreatedAt).format(format);
 };
