@@ -17,6 +17,8 @@ import { SupplierDetails } from "./pages/suppliers/SupplierDetail"
 import { PurchaseOrderPage } from "./pages/purchase-orders/PurchaseOrderPage"
 import { PurchaseOrderDetails } from "./pages/purchase-orders/PurchaseOrderDetails"
 import { InventoryPage } from "./pages/inventory/InventoryPage"
+import { WarehousePage } from "./pages/warehouses/WarehousePage"
+import { WarehouseDetails } from "./pages/warehouses/WarehouseDetails"
 
 export function AppRouter() {
 
@@ -43,6 +45,8 @@ export function AppRouter() {
         <Route path="/purchase-orders" element={<PurchaseOrderPage/>}/>
         <Route path="/purchase-orders/:purchaseOrderId" element={<PurchaseOrderDetails/>}/>
         <Route path="/inventory" element={<InventoryPage/>}/>
+        <Route path="/warehouses" element={<WarehousePage/>}/>
+        <Route path="/warehouses/:warehouseId" element={<WarehouseDetails/>}/>
       </Route>
     </Routes>
   )
