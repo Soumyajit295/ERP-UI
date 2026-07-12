@@ -50,7 +50,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
         label: "Inventory",
         icon: Warehouse,
         children: [
-          { label: "Stock Overview", path: "#"},
+          { label: "Stock Overview", path: "/inventory"},
           { label: "Warehouses", path: "#"}
         ]
       },

@@ -16,6 +16,7 @@ import { ProductDetails } from "./pages/products/ProductDetails"
 import { SupplierDetails } from "./pages/suppliers/SupplierDetail"
 import { PurchaseOrderPage } from "./pages/purchase-orders/PurchaseOrderPage"
 import { PurchaseOrderDetails } from "./pages/purchase-orders/PurchaseOrderDetails"
+import { InventoryPage } from "./pages/inventory/InventoryPage"
 
 export function AppRouter() {
 
@@ -41,6 +42,7 @@ export function AppRouter() {
         <Route path="/suppliers/:supplierId" element={<SupplierDetails/>}/>
         <Route path="/purchase-orders" element={<PurchaseOrderPage/>}/>
         <Route path="/purchase-orders/:purchaseOrderId" element={<PurchaseOrderDetails/>}/>
+        <Route path="/inventory" element={<InventoryPage/>}/>
       </Route>
     </Routes>
   )
