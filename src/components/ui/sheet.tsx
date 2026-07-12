@@ -48,13 +48,20 @@ function SheetOverlay({ className, ...props }: React.ComponentProps<typeof Sheet
   )
 }
 
-function SheetContent({ className, children, side = "right", ...props }: SheetContentProps) {
+function SheetContent({ className, children, side = "right", onInteractOutside, ...props }: SheetContentProps) {
   return (
     <SheetPrimitive.Portal>
       <SheetOverlay />
       <SheetPrimitive.Content
         data-slot="sheet-content"
         className={cn(sheetVariants({ side }), "data-[state=open]:animate-in data-[state=closed]:animate-out", className)}
+        onInteractOutside={(e) => {
+          const target = e.target as HTMLElement
+          if (target?.closest("[data-radix-popper-content-wrapper]")) {
+            e.preventDefault()
+          }
+          onInteractOutside?.(e)
+        }}
         {...props}
       >
         {children}

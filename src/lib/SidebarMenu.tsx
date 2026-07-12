@@ -44,7 +44,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
       {
         label: "Purchases",
         icon: ShoppingCart,
-        path: "#",
+        path: "/purchase-orders",
       },
       {
         label: "Inventory",

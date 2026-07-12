@@ -14,6 +14,8 @@ import { CategoryPage } from "./pages/categories/CategoryPage"
 import { SupplierPage } from "./pages/suppliers/SupplierPage"
 import { ProductDetails } from "./pages/products/ProductDetails"
 import { SupplierDetails } from "./pages/suppliers/SupplierDetail"
+import { PurchaseOrderPage } from "./pages/purchase-orders/PurchaseOrderPage"
+import { PurchaseOrderDetails } from "./pages/purchase-orders/PurchaseOrderDetails"
 
 export function AppRouter() {
 
@@ -37,6 +39,8 @@ export function AppRouter() {
         <Route path="/categories" element={<CategoryPage/>}/>
         <Route path="/suppliers" element={<SupplierPage/>}/>
         <Route path="/suppliers/:supplierId" element={<SupplierDetails/>}/>
+        <Route path="/purchase-orders" element={<PurchaseOrderPage/>}/>
+        <Route path="/purchase-orders/:purchaseOrderId" element={<PurchaseOrderDetails/>}/>
       </Route>
     </Routes>
   )

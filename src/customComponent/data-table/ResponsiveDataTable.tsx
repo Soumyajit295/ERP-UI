@@ -52,7 +52,7 @@ export function ResponsiveDataTable<TData>({
           ? <MobileCardList table={table} actions={actions} />
           : <DesktopTable table={table} actions={actions} />}
       </div>
-      <DataTablePagination table={table} />
+      {pagination && <DataTablePagination table={table} />}
     </div>
   )
 }
