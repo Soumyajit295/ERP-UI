@@ -62,7 +62,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
       {
         label: "Customers",
         icon: UserCheck,
-        path: "#"
+        path: "/customers"
       },
       {
         label: "Sales Order",
