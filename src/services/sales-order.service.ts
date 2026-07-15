@@ -32,6 +32,10 @@ export interface SalesOrderListResponse {
   meta: PaginationMeta;
 }
 
+export interface SalesOrderOptionQueryDto {
+  customerId?: string;
+}
+
 export interface SalesOrderListItem {
   salesOrderId: string;
   salesOrderNumber: string;
@@ -99,8 +103,8 @@ export const updateSalesOrderStatus = async(salesOrderId: string, payload: Updat
     })
 }
 
-export const getSalesOrderOptions = async(): Promise<SalesOrderOptions> => {
-    return await fetchWithAuth(`sales-orders/options`)
+export const getSalesOrderOptions = async(query?: SalesOrderOptionQueryDto): Promise<SalesOrderOptions[]> => {
+    return await fetchWithAuth(`sales-orders/options`,{query})
 }
 
 export const getSalesOrders = async(getSalesOrderQueryDto: GetSalesOrderQueryDto): Promise<SalesOrderListResponse> => {

@@ -57,7 +57,10 @@ function SheetContent({ className, children, side = "right", onInteractOutside, 
         className={cn(sheetVariants({ side }), "data-[state=open]:animate-in data-[state=closed]:animate-out", className)}
         onInteractOutside={(e) => {
           const target = e.target as HTMLElement
-          if (target?.closest("[data-radix-popper-content-wrapper]")) {
+          if (
+            target?.closest("[data-radix-popper-content-wrapper]") ||
+            target?.closest("[data-slot='sheet-content']")
+          ) {
             e.preventDefault()
           }
           onInteractOutside?.(e)

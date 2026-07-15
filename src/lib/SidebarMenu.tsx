@@ -77,7 +77,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
       {
         label: "Invoices",
         icon: Receipt,
-        path: "#"
+        path: "/invoices"
       },
       {
         label: "Payments",
