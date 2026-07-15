@@ -22,6 +22,8 @@ import { WarehouseDetails } from "./pages/warehouses/WarehouseDetails"
 import { CustomerPage } from "./pages/customers/CustomerPage"
 import { SalesOrderPage } from "./pages/sales-orders/SalesOrderPage"
 import { SalesOrderDetails } from "./pages/sales-orders/SalesOrderDetails"
+import { InvoicePage } from "./pages/invoices/InvoicePage"
+import { InvoiceDetails } from "./pages/invoices/InvoiceDetails"
 
 export function AppRouter() {
 
@@ -53,6 +55,8 @@ export function AppRouter() {
         <Route path="/customers" element={<CustomerPage/>}/>
         <Route path="/sales-orders" element={<SalesOrderPage/>}/>
         <Route path="/sales-orders/:salesOrderId" element={<SalesOrderDetails/>}/>
+        <Route path="/invoices" element={<InvoicePage/>}/>
+        <Route path="/invoices/:invoiceId" element={<InvoiceDetails/>}/>
       </Route>
     </Routes>
   )
