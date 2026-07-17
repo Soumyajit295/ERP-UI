@@ -28,6 +28,16 @@ export interface GetPurchaseOrderQueryDto {
   search?: string;
 }
 
+export interface PurchaseOrderOptionQueryDto {
+  supplierId?: string;
+  status?: PurchaseOrderStatus[]
+}
+
+export interface PurchaseOrderOptions {
+    label: string
+    value: string
+}
+
 export interface PurchaseOrderListResponse {
   records: PurchaseOrderListItem[];
   meta: PaginationMeta;
@@ -104,6 +114,10 @@ export const updatePurchaseOrderStatus = async(purchaseOrderId: string,payload: 
 
 export const deletePurchaseOrder = async(purchaseOrderId: string): Promise<{message: string}> => {
     return await fetchWithAuth(`purchase-orders/${purchaseOrderId}`,{method: 'DELETE'})
+}
+
+export const getPurchaseOrderOptions = async(query?: PurchaseOrderOptionQueryDto): Promise<PurchaseOrderOptions[]> => {
+    return await fetchWithAuth(`purchase-orders/options`,{query})
 }
 
 export const getPurchaseOrders = async(getPurchaseOrderQuery: GetPurchaseOrderQueryDto): Promise<PurchaseOrderListResponse> => {

@@ -50,6 +50,15 @@ export interface PaginationMeta {
   totalPages: number;
 }
 
+export interface InvoiceOptionQueryDto {
+  status?: InvoiceStatus[]
+}
+
+export interface InvoiceOption {
+  label: string
+  value: string
+}
+
 export interface InvoiceDetailsResponse {
   invoiceId: string;
   invoiceNumber: string;
@@ -104,6 +113,10 @@ export const getInvoices = async (
 ): Promise<InvoiceListResponse> => {
   return await fetchWithAuth("invoice", { query });
 };
+
+export const getInvoiceOptions = async (query?: InvoiceOptionQueryDto): Promise<InvoiceOption[]> => {
+  return await fetchWithAuth("invoice/options", { query })
+}
 
 export const getInvoiceDetails = async (
   invoiceId: string

@@ -5,7 +5,7 @@ import { getPurchaseOrderDetails, downloadPurchaseOrder } from "@/services/purch
 import { useQuery } from "@tanstack/react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import { CustomButton } from "@/customComponent/CustomButton"
-import { ArrowLeft, FileDown } from "lucide-react"
+import { ArrowLeft, FileDown, Loader2 } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
 import { PurchaseOrderOverview } from "./PurchaseOrderOverview"
@@ -17,12 +17,22 @@ export const PurchaseOrderDetails = () => {
   const { purchaseOrderId } = useParams()
   const navigate = useNavigate()
 
-  const { data: orderData } = useQuery({
+  const { data: orderData, isPending } = useQuery({
     queryKey: ["purchase-order-details", purchaseOrderId],
     queryFn: () => getPurchaseOrderDetails(purchaseOrderId!),
   })
 
   const [downloading, setDownloading] = useState(false)
+
+  if (isPending) {
+    return (
+      <PageContainer>
+        <div className="flex h-full items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </PageContainer>
+    )
+  }
 
   const handleDownloadPdf = async () => {
     if (!purchaseOrderId || !orderData) return

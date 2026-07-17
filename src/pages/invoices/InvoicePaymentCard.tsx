@@ -9,7 +9,7 @@ interface InvoicePaymentCardProps {
 }
 
 export const InvoicePaymentCard = ({ totalAmount, paidAmount, balanceAmount }: InvoicePaymentCardProps) => {
-  const percentage = totalAmount > 0 ? Math.round((paidAmount / totalAmount) * 100) : 0
+  const percentage = (totalAmount ?? 0) > 0 ? Math.round(((paidAmount ?? 0) / totalAmount) * 100) : 0
 
   return (
     <SectionCard
@@ -29,14 +29,14 @@ export const InvoicePaymentCard = ({ totalAmount, paidAmount, balanceAmount }: I
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">Paid Amount</p>
             <span className="text-lg font-semibold text-green-600">
-              ₹{paidAmount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+              ₹{(paidAmount ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </span>
           </div>
 
           <div className="space-y-2">
             <p className="text-sm text-muted-foreground">Balance Amount</p>
             <span className="text-lg font-semibold text-red-600">
-              ₹{balanceAmount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+              ₹{(balanceAmount ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
             </span>
           </div>
         </div>

@@ -15,20 +15,20 @@ export const PurchaseOrderWarehouseCard = ({ delivery }: PurchaseOrderWarehouseC
     >
       <div className="grid grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-2">
         <DetailItem label="Warehouse Name">
-          <span className="font-medium">{delivery.wareHouseName}</span>
+          <span className="font-medium">{delivery?.wareHouseName || "—"}</span>
         </DetailItem>
 
         <DetailItem label="Contact Person">
-          <span className="font-medium">{delivery.wareHouseContactPerson}</span>
+          <span className="font-medium">{delivery?.wareHouseContactPerson || "—"}</span>
         </DetailItem>
 
         <DetailItem label="Phone">
-          <span className="font-medium">{delivery.wareHousePhone}</span>
+          <span className="font-medium">{delivery?.wareHousePhone || "—"}</span>
         </DetailItem>
 
         <div className="md:col-span-2">
           <DetailItem label="Address">
-            <span className="font-medium">{delivery.wareHouseAddress}</span>
+            <span className="font-medium">{delivery?.wareHouseAddress || "—"}</span>
           </DetailItem>
         </div>
       </div>

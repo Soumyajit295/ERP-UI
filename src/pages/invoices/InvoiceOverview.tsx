@@ -19,20 +19,20 @@ export const InvoiceOverview = ({ invoice }: InvoiceOverviewProps) => {
     <div className="grid gap-4 md:grid-cols-3">
       <StatsCard
         title="Invoice Date"
-        value={formatDate(invoice.invoiceDate, "D MMM YYYY")}
+        value={formatDate(invoice?.invoiceDate, "D MMM YYYY")}
         icon={Calendar}
       />
       <StatsCard
         title="Total Amount"
-        value={`₹${invoice.totalAmount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
-        subtitle={`Paid: ₹${invoice.paidAmount.toLocaleString("en-IN")} • Balance: ₹${invoice.balanceAmount.toLocaleString("en-IN")}`}
+        value={`₹${(invoice?.totalAmount ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
+        subtitle={`Paid: ₹${(invoice?.paidAmount ?? 0).toLocaleString("en-IN")} • Balance: ₹${(invoice?.balanceAmount ?? 0).toLocaleString("en-IN")}`}
         icon={DollarSign}
       />
       <StatsCard
         title="Status"
-        value={invoice.invoiceStatus}
+        value={invoice?.invoiceStatus || "—"}
         icon={CircleCheck}
-        iconClassName={statusColorMap[invoice.invoiceStatus]}
+        iconClassName={statusColorMap[invoice?.invoiceStatus || ""]}
       />
     </div>
   )

@@ -19,19 +19,19 @@ export const SalesOrderOverview = ({ order }: SalesOrderOverviewProps) => {
     <div className="grid gap-4 md:grid-cols-3">
       <StatsCard
         title="Order Date"
-        value={formatDate(order.orderDate, "D MMM YYYY")}
+        value={formatDate(order?.orderDate, "D MMM YYYY")}
         icon={Calendar}
       />
       <StatsCard
         title="Total Amount"
-        value={`₹${order.totalAmount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
+        value={`₹${(order?.totalAmount ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
         icon={DollarSign}
       />
       <StatsCard
         title="Status"
-        value={order.orderStatus}
+        value={order?.orderStatus || "—"}
         icon={CircleCheck}
-        iconClassName={statusColorMap[order.orderStatus]}
+        iconClassName={statusColorMap[order?.orderStatus || ""]}
       />
     </div>
   )

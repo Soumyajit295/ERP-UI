@@ -7,7 +7,7 @@ interface WarehouseContactCardProps {
 }
 
 export const WarehouseContactCard = ({ warehouse }: WarehouseContactCardProps) => {
-  const info = warehouse.contactInformation
+  const info = warehouse?.contactInformation
 
   return (
     <SectionCard
@@ -19,14 +19,14 @@ export const WarehouseContactCard = ({ warehouse }: WarehouseContactCardProps) =
           <User className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="shrink-0 text-sm text-muted-foreground">Name</span>
           <span className="min-w-0 font-medium truncate">
-            {info.warehouseContactPerson || "—"}
+            {info?.warehouseContactPerson || "—"}
           </span>
         </div>
         <div className="flex items-center gap-3">
           <Phone className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="shrink-0 text-sm text-muted-foreground">Phone</span>
           <span className="min-w-0 font-medium truncate">
-            {info.warehousePhone || "—"}
+            {info?.warehousePhone || "—"}
           </span>
         </div>
       </div>

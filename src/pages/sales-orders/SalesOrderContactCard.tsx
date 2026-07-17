@@ -15,15 +15,15 @@ export const SalesOrderContactCard = ({ customer }: SalesOrderContactCardProps) 
     >
       <div className="grid grid-cols-1 gap-x-16 gap-y-8 md:grid-cols-2">
         <DetailItem label="Customer Name">
-          <span className="font-medium">{customer.customerName}</span>
+          <span className="font-medium">{customer?.customerName || "—"}</span>
         </DetailItem>
 
         <DetailItem label="Email">
-          <span className="font-medium">{customer.customerEmail}</span>
+          <span className="font-medium">{customer?.customerEmail || "—"}</span>
         </DetailItem>
 
         <DetailItem label="Phone">
-          <span className="font-medium">{customer.customerPhone}</span>
+          <span className="font-medium">{customer?.customerPhone || "—"}</span>
         </DetailItem>
       </div>
     </SectionCard>
