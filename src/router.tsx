@@ -24,6 +24,8 @@ import { SalesOrderPage } from "./pages/sales-orders/SalesOrderPage"
 import { SalesOrderDetails } from "./pages/sales-orders/SalesOrderDetails"
 import { InvoicePage } from "./pages/invoices/InvoicePage"
 import { InvoiceDetails } from "./pages/invoices/InvoiceDetails"
+import { PaymentPage } from "./pages/payments/PaymentPage"
+import { PaymentDetails } from "./pages/payments/PaymentDetails"
 
 export function AppRouter() {
 
@@ -57,6 +59,8 @@ export function AppRouter() {
         <Route path="/sales-orders/:salesOrderId" element={<SalesOrderDetails/>}/>
         <Route path="/invoices" element={<InvoicePage/>}/>
         <Route path="/invoices/:invoiceId" element={<InvoiceDetails/>}/>
+        <Route path="/payments" element={<PaymentPage/>}/>
+        <Route path="/payments/:paymentId" element={<PaymentDetails/>}/>
       </Route>
     </Routes>
   )

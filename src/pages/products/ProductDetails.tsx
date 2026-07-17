@@ -8,16 +8,27 @@ import { ProductOverview } from "./ProductOverview"
 import { ProductInfoCard } from "./ProductInfoCard"
 import { WarehouseStockCard } from "./WarehouseStockCard"
 import { CustomButton } from "@/customComponent/CustomButton"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Loader2 } from "lucide-react"
 
 export const ProductDetails = () => {
     const {productId} = useParams()
     const navigate = useNavigate()
 
-    const {data: productData,isFetching} = useQuery({
+    const {data: productData, isPending} = useQuery({
         queryKey: ['product-detils',productId],
         queryFn: () => getProductDetails(productId!)
     })
+
+    if (isPending) {
+        return (
+            <PageContainer>
+                <div className="flex h-full items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+            </PageContainer>
+        )
+    }
+
     return (
         <PageContainer>
             <Breadcrumbs items={[
@@ -38,9 +49,13 @@ export const ProductDetails = () => {
                 }
             />
             <div className="flex flex-col space-y-4">
-              <ProductOverview product={productData!}/>
-              <ProductInfoCard product={productData!}/>
-              <WarehouseStockCard inventoryDetails={productData?.inventoryDetails ?? []}/>
+              {productData && (
+                <>
+                  <ProductOverview product={productData}/>
+                  <ProductInfoCard product={productData}/>
+                  <WarehouseStockCard inventoryDetails={productData?.inventoryDetails ?? []}/>
+                </>
+              )}
             </div>
         </PageContainer>
     )

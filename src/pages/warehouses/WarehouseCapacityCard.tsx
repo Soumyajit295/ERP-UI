@@ -8,8 +8,8 @@ interface WarehouseCapacityCardProps {
 }
 
 export const WarehouseCapacityCard = ({ warehouse }: WarehouseCapacityCardProps) => {
-  const used = warehouse.unitsOnHand
-  const total = warehouse.warehouseCapacity
+  const used = warehouse?.unitsOnHand ?? 0
+  const total = warehouse?.warehouseCapacity ?? 0
   const percentage = total > 0 ? Math.min((used / total) * 100, 100) : 0
 
   return (

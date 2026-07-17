@@ -5,7 +5,7 @@ import { getSlaesOrderDetails, downloadSalesOrderPDF } from "@/services/sales-or
 import { useQuery } from "@tanstack/react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import { CustomButton } from "@/customComponent/CustomButton"
-import { ArrowLeft, FileDown } from "lucide-react"
+import { ArrowLeft, FileDown, Loader2 } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
 import { SalesOrderOverview } from "./SalesOrderOverview"
@@ -17,12 +17,22 @@ export const SalesOrderDetails = () => {
   const { salesOrderId } = useParams()
   const navigate = useNavigate()
 
-  const { data: orderData } = useQuery({
+  const { data: orderData, isPending } = useQuery({
     queryKey: ["sales-order-details", salesOrderId],
     queryFn: () => getSlaesOrderDetails(salesOrderId!),
   })
 
   const [downloading, setDownloading] = useState(false)
+
+  if (isPending) {
+    return (
+      <PageContainer>
+        <div className="flex h-full items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </PageContainer>
+    )
+  }
 
   const handleDownloadPdf = async () => {
     if (!salesOrderId || !orderData) return

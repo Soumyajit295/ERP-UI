@@ -34,6 +34,7 @@ export interface SalesOrderListResponse {
 
 export interface SalesOrderOptionQueryDto {
   customerId?: string;
+  status?: SalesOrderStatus[]
 }
 
 export interface SalesOrderListItem {

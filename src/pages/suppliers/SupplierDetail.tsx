@@ -4,7 +4,7 @@ import { PageHeader } from "@/customComponent/PageHeader"
 import { Breadcrumbs } from "@/customComponent/Breadcrumbs"
 import { getSupplierDetails } from "@/services/supplier.service"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Loader2 } from "lucide-react"
 import { useNavigate, useParams } from "react-router-dom"
 import { SupplierOverview } from "./SupplieOverview"
 import { SupplierInfoCard } from "./SupplierInfoCard"
@@ -14,10 +14,20 @@ export const SupplierDetails = () => {
     const {supplierId} = useParams()
     const navigate = useNavigate()
 
-    const {data: supplierData,isFetching} = useQuery({
+    const {data: supplierData, isPending} = useQuery({
         queryKey: ['supplier-details',supplierId],
         queryFn: () => getSupplierDetails(supplierId!)
     })
+
+    if (isPending) {
+        return (
+            <PageContainer>
+                <div className="flex h-full items-center justify-center">
+                    <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+                </div>
+            </PageContainer>
+        )
+    }
 
     return(
         <PageContainer>

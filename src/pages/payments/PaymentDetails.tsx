@@ -1,25 +1,24 @@
 import { PageContainer } from "@/customComponent/PageContainer"
 import { PageHeader } from "@/customComponent/PageHeader"
 import { Breadcrumbs } from "@/customComponent/Breadcrumbs"
-import { getInvoiceDetails, downloadInvoice } from "@/services/invoice.service"
+import { getPaymentDetails, downloadPaymentRecipt } from "@/services/payment.service"
 import { useQuery } from "@tanstack/react-query"
 import { useNavigate, useParams } from "react-router-dom"
 import { CustomButton } from "@/customComponent/CustomButton"
-import { ArrowLeft, FileDown, Loader2 } from "lucide-react"
+import { ArrowLeft, Download, Loader2 } from "lucide-react"
 import { useState } from "react"
 import { toast } from "sonner"
-import { InvoiceOverview } from "./InvoiceOverview"
-import { InvoiceCustomerCard } from "./InvoiceCustomerCard"
-import { InvoicePaymentCard } from "./InvoicePaymentCard"
-import { InvoiceItems } from "./InvoiceItems"
+import { PaymentOverview } from "./PaymentOverview"
+import { PaymentInfoCard } from "./PaymentInfoCard"
+import { PaymentRelatedOrders } from "./PaymentRelatedOrders"
 
-export const InvoiceDetails = () => {
-  const { invoiceId } = useParams()
+export const PaymentDetails = () => {
+  const { paymentId } = useParams()
   const navigate = useNavigate()
 
-  const { data: invoiceData, isPending } = useQuery({
-    queryKey: ["invoice-details", invoiceId],
-    queryFn: () => getInvoiceDetails(invoiceId!),
+  const { data: paymentData, isPending } = useQuery({
+    queryKey: ["payment-details", paymentId],
+    queryFn: () => getPaymentDetails(paymentId!),
   })
 
   const [downloading, setDownloading] = useState(false)
@@ -34,21 +33,21 @@ export const InvoiceDetails = () => {
     )
   }
 
-  const handleDownloadPdf = async () => {
-    if (!invoiceId || !invoiceData) return
+  const handleDownloadReceipt = async () => {
+    if (!paymentId) return
     setDownloading(true)
     try {
-      const blob = await downloadInvoice(invoiceId)
+      const blob = await downloadPaymentRecipt(paymentId)
       const url = window.URL.createObjectURL(blob)
       const link = document.createElement("a")
       link.href = url
-      link.download = `${invoiceData.invoiceNumber}.pdf`
+      link.download = `receipt-${paymentData?.paymentNumber || paymentId}.pdf`
       document.body.appendChild(link)
       link.click()
       document.body.removeChild(link)
       window.URL.revokeObjectURL(url)
     } catch (error: any) {
-      toast.error(error.message || "Failed to download PDF")
+      toast.error(error.message || "Failed to download receipt")
     } finally {
       setDownloading(false)
     }
@@ -58,28 +57,28 @@ export const InvoiceDetails = () => {
     <PageContainer>
       <Breadcrumbs
         items={[
-          { label: "Invoices", href: "/invoices" },
-          { label: invoiceData?.invoiceNumber || "..." },
+          { label: "Payments", href: "/payments" },
+          { label: paymentData?.paymentNumber || "..." },
         ]}
       />
       <PageHeader
-        pageName={invoiceData?.invoiceNumber || ""}
+        pageName={paymentData?.paymentNumber || ""}
         extraButton={
           <div className="flex gap-2">
             <CustomButton
               variant="outline"
               size="sm"
-              onClick={handleDownloadPdf}
+              onClick={handleDownloadReceipt}
               loading={downloading}
               loadLabel="Downloading..."
               className="p-5"
-              label="Download PDF"
-              icon={<FileDown className="size-4" />}
+              label="Download Receipt"
+              icon={<Download className="size-4" />}
             />
             <CustomButton
               variant="outline"
               size="sm"
-              onClick={() => navigate("/invoices")}
+              onClick={() => navigate("/payments")}
               className="p-5"
               label="Back"
               icon={<ArrowLeft className="size-4" />}
@@ -88,18 +87,11 @@ export const InvoiceDetails = () => {
         }
       />
       <div className="flex flex-col space-y-4">
-        {invoiceData && (
+        {paymentData && (
           <>
-            <InvoiceOverview invoice={invoiceData} />
-            <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-              <InvoiceCustomerCard customer={invoiceData.customerInfo} />
-              <InvoicePaymentCard
-                totalAmount={invoiceData.totalAmount}
-                paidAmount={invoiceData.paidAmount}
-                balanceAmount={invoiceData.balanceAmount}
-              />
-            </div>
-            <InvoiceItems items={invoiceData.items} />
+            <PaymentOverview payment={paymentData} />
+            <PaymentInfoCard payment={paymentData} />
+            <PaymentRelatedOrders payment={paymentData} />
           </>
         )}
       </div>

@@ -7,7 +7,7 @@ interface SupplierInfoCardProps {
 }
 
 export const SupplierInfoCard = ({ supplier }: SupplierInfoCardProps) => {
-  const info = supplier.contactInformation
+  const info = supplier?.contactInformation
 
   return (
     <SectionCard
@@ -18,19 +18,19 @@ export const SupplierInfoCard = ({ supplier }: SupplierInfoCardProps) => {
         <div className="flex items-center gap-3">
           <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="shrink-0 text-sm text-muted-foreground">Email</span>
-          <span className="min-w-0 font-medium truncate">{info.supplierEmail || "—"}</span>
+          <span className="min-w-0 font-medium truncate">{info?.supplierEmail || "—"}</span>
         </div>
 
         <div className="flex items-center gap-3">
           <Phone className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="shrink-0 text-sm text-muted-foreground">Phone</span>
-          <span className="min-w-0 font-medium truncate">{info.supplierPhone || "—"}</span>
+          <span className="min-w-0 font-medium truncate">{info?.supplierPhone || "—"}</span>
         </div>
 
         <div className="flex items-center gap-3">
           <MapPin className="h-4 w-4 shrink-0 text-muted-foreground" />
           <span className="shrink-0 text-sm text-muted-foreground">Address</span>
-          <span className="min-w-0 font-medium truncate">{info.supplierAddress || "—"}</span>
+          <span className="min-w-0 font-medium truncate">{info?.supplierAddress || "—"}</span>
         </div>
       </div>
     </SectionCard>

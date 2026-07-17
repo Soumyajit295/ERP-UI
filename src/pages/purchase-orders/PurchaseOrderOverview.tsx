@@ -20,20 +20,20 @@ export const PurchaseOrderOverview = ({ order }: PurchaseOrderOverviewProps) => 
     <div className="grid gap-4 md:grid-cols-3">
       <StatsCard
         title="Order Date"
-        value={formatDate(order.purchaseOrderDate, "D MMM YYYY")}
+        value={formatDate(order?.purchaseOrderDate, "D MMM YYYY")}
         icon={Calendar}
       />
       <StatsCard
         title="Total Amount"
-        value={`₹${order.purchaseOrderTotalPrice.toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
-        subtitle={`Paid: ₹${order.paidAmount.toLocaleString("en-IN")} • Balance: ₹${order.balanceAmount.toLocaleString("en-IN")}`}
+        value={`₹${(order?.purchaseOrderTotalPrice ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}`}
+        subtitle={`Paid: ₹${(order?.paidAmount ?? 0).toLocaleString("en-IN")} • Balance: ₹${(order?.balanceAmount ?? 0).toLocaleString("en-IN")}`}
         icon={DollarSign}
       />
       <StatsCard
         title="Status"
-        value={order.purchaseOrderStatus}
+        value={order?.purchaseOrderStatus || "—"}
         icon={CircleCheck}
-        iconClassName={statusColorMap[order.purchaseOrderStatus]}
+        iconClassName={statusColorMap[order?.purchaseOrderStatus || ""]}
       />
     </div>
   )

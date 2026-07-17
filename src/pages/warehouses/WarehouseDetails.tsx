@@ -4,7 +4,7 @@ import { PageHeader } from "@/customComponent/PageHeader"
 import { Breadcrumbs } from "@/customComponent/Breadcrumbs"
 import { getWarehouseDetails } from "@/services/warehouse.service"
 import { useQuery } from "@tanstack/react-query"
-import { ArrowLeft } from "lucide-react"
+import { ArrowLeft, Loader2 } from "lucide-react"
 import { useNavigate, useParams } from "react-router-dom"
 import { WarehouseOverview } from "./WarehouseOverview"
 import { WarehouseLocationCard } from "./WarehouseLocationCard"
@@ -16,10 +16,20 @@ export const WarehouseDetails = () => {
   const { warehouseId } = useParams()
   const navigate = useNavigate()
 
-  const { data: warehouseData } = useQuery({
+  const { data: warehouseData, isPending } = useQuery({
     queryKey: ["warehouse-details", warehouseId],
     queryFn: () => getWarehouseDetails(warehouseId!),
   })
+
+  if (isPending) {
+    return (
+      <PageContainer>
+        <div className="flex h-full items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </PageContainer>
+    )
+  }
 
   return (
     <PageContainer>

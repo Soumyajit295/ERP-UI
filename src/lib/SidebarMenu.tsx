@@ -82,7 +82,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
       {
         label: "Payments",
         icon: CreditCard,
-        path: "#"
+        path: "/payments"
       }
     ]
   },

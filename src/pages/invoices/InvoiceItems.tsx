@@ -30,7 +30,7 @@ const columns: ColumnDef<InvoiceItem>[] = [
       const price = getValue<number>()
       return (
         <span className="font-medium">
-          ₹{price.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+          ₹{(price ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
         </span>
       )
     },
@@ -44,7 +44,7 @@ const columns: ColumnDef<InvoiceItem>[] = [
       const discount = getValue<number>()
       return (
         <span className="font-medium">
-          ₹{discount.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+          ₹{(discount ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
         </span>
       )
     },
@@ -58,7 +58,7 @@ const columns: ColumnDef<InvoiceItem>[] = [
       const total = getValue<number>()
       return (
         <span className="font-medium">
-          ₹{total.toLocaleString("en-IN", { minimumFractionDigits: 2 })}
+          ₹{(total ?? 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
         </span>
       )
     },
