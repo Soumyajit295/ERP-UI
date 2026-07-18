@@ -72,7 +72,7 @@ export const sidebarMenuGroups: SidebarMenuGroup[] = [
       {
         label: "Finance",
         icon: Wallet,
-        path: "#"
+        path: "/finance"
       },
       {
         label: "Invoices",
