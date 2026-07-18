@@ -4,7 +4,7 @@ import { type ColumnDef } from "@tanstack/react-table"
 import { getPaymentRecords, downloadPaymentRecipt, type PaymentListItem } from "@/services/payment.service"
 import { useQuery } from "@tanstack/react-query"
 import { ResponsiveDataTable, type Action } from "@/customComponent/data-table"
-import { Download, Eye } from "lucide-react"
+import { ArrowLeft, Download, Eye } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 import { hasPermission } from "@/common/utils"
 import { PERMISSIONS } from "@/common/constants/permissions.constant"
@@ -152,6 +152,15 @@ export const PaymentPage = () => {
           setFormOpen(true)
         }}
         addPermission={hasPermission(PERMISSIONS.Finance.Create)}
+        extraButton={
+          <button
+            onClick={() => navigate("/finance")}
+            className="inline-flex cursor-pointer items-center gap-2 rounded-md bg-success px-4 py-2 text-sm font-medium text-white hover:bg-success/90"
+          >
+            <ArrowLeft className="size-4" />
+            Back to Finance
+          </button>
+        }
       />
       <ResponsiveDataTable
         columns={columns}

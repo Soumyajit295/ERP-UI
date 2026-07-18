@@ -26,6 +26,7 @@ import { InvoicePage } from "./pages/invoices/InvoicePage"
 import { InvoiceDetails } from "./pages/invoices/InvoiceDetails"
 import { PaymentPage } from "./pages/payments/PaymentPage"
 import { PaymentDetails } from "./pages/payments/PaymentDetails"
+import { FinancePage } from "./pages/finance/FinancePage"
 
 export function AppRouter() {
 
@@ -61,6 +62,7 @@ export function AppRouter() {
         <Route path="/invoices/:invoiceId" element={<InvoiceDetails/>}/>
         <Route path="/payments" element={<PaymentPage/>}/>
         <Route path="/payments/:paymentId" element={<PaymentDetails/>}/>
+        <Route path="/finance" element={<FinancePage/>}/>
       </Route>
     </Routes>
   )
