@@ -9,6 +9,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { PERMISSIONS } from "@/common/constants/permissions.constant"
 import { hasPermission } from "@/common/utils"
 import { RolePermissionForm } from "./RolePermissionForm"
+import { RoleForm } from "./RoleForm"
+import { CustomButton } from "@/customComponent/CustomButton"
+import { Plus } from "lucide-react"
 
 interface ModulePermission {
   moduleId: string
@@ -71,6 +74,7 @@ export const RolePermissionPage = () => {
   const [selectedRoleId, setSelectedRoleId] = useState("")
   const [initialized, setInitialized] = useState(false)
   const [formOpen, setFormOpen] = useState(false)
+  const [roleFormOpen, setRoleFormOpen] = useState(false)
 
   const { data: roleOptions } = useQuery({
     queryKey: ["tenant-roles"],
@@ -97,6 +101,8 @@ export const RolePermissionPage = () => {
 
   const tableData = permissions ? transformPermissions(permissions) : []
 
+  console.log("Permissions : ",permissions)
+
   const moduleOptions = Object.keys(PERMISSIONS).map((key) => ({
     label: key,
     value: key,
@@ -110,6 +116,14 @@ export const RolePermissionPage = () => {
         actionButtonLabel="Add Role Permission"
         onActionButtonClick={() => setFormOpen(true)}
         addPermission={hasPermission(PERMISSIONS.User.Create)}
+        extraButton={
+          <CustomButton
+            icon={<Plus className="size-4" />}
+            label="Add Role"
+            onClick={() => setRoleFormOpen(true)}
+            className="p-5"
+          />
+        }
       />
       <div className="flex items-center gap-4 pb-2">
         <span className="text-sm font-medium whitespace-nowrap">Select Role</span>
@@ -137,6 +151,7 @@ export const RolePermissionPage = () => {
         roleOptions={roleOptions || []}
         moduleOptions={moduleOptions}
       />
+      <RoleForm open={roleFormOpen} onOpenChange={setRoleFormOpen} />
     </PageContainer>
   )
 }
