@@ -8,10 +8,9 @@ import { getPermissionByRole, getRolesOptions, type PemissionsResponse } from "@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { PERMISSIONS } from "@/common/constants/permissions.constant"
 import { hasPermission } from "@/common/utils"
-import { RolePermissionForm } from "./RolePermissionForm"
+import { Checkbox } from "@/components/ui/checkbox"
+import { getModuleOptions } from "@/services/module.service"
 import { RoleForm } from "./RoleForm"
-import { CustomButton } from "@/customComponent/CustomButton"
-import { Plus } from "lucide-react"
 
 interface ModulePermission {
   moduleId: string
@@ -21,26 +20,32 @@ interface ModulePermission {
   modify: boolean
 }
 
-function transformPermissions(records: PemissionsResponse[]): ModulePermission[] {
-  const map = new Map<string, ModulePermission>()
+function transformPermissions(
+  allModules: { label: string; value: string }[],
+  records: PemissionsResponse[],
+): ModulePermission[] {
+  const permMap = new Map<string, { create: boolean; read: boolean; modify: boolean }>()
 
   for (const p of records) {
-    if (!map.has(p.moduleId)) {
-      map.set(p.moduleId, {
-        moduleId: p.moduleId,
-        moduleName: p.moduleName,
-        create: false,
-        read: false,
-        modify: false,
-      })
+    if (!permMap.has(p.moduleId)) {
+      permMap.set(p.moduleId, { create: false, read: false, modify: false })
     }
-    const entry = map.get(p.moduleId)!
+    const entry = permMap.get(p.moduleId)!
     if (p.permissionName === "CREATE") entry.create = true
     if (p.permissionName === "READ") entry.read = true
     if (p.permissionName === "MODIFY") entry.modify = true
   }
 
-  return Array.from(map.values())
+  return allModules.map((mod) => {
+    const perm = permMap.get(mod.value)
+    return {
+      moduleId: mod.value,
+      moduleName: mod.label,
+      create: perm?.create ?? false,
+      read: perm?.read ?? false,
+      modify: perm?.modify ?? false,
+    }
+  })
 }
 
 const columns: ColumnDef<ModulePermission>[] = [
@@ -54,31 +59,35 @@ const columns: ColumnDef<ModulePermission>[] = [
     id: "create",
     header: "Create",
     meta: { mobileLabel: "Create" },
-    cell: ({ row }) => (row.original.create ? "Yes" : "No"),
+    cell: ({ row }) => <Checkbox checked={row.original.create} disabled />,
   },
   {
     id: "read",
     header: "Read",
     meta: { mobileLabel: "Read" },
-    cell: ({ row }) => (row.original.read ? "Yes" : "No"),
+    cell: ({ row }) => <Checkbox checked={row.original.read} disabled />,
   },
   {
     id: "modify",
     header: "Modify",
     meta: { mobileLabel: "Modify" },
-    cell: ({ row }) => (row.original.modify ? "Yes" : "No"),
+    cell: ({ row }) => <Checkbox checked={row.original.modify} disabled />,
   },
 ]
 
 export const RolePermissionPage = () => {
   const [selectedRoleId, setSelectedRoleId] = useState("")
   const [initialized, setInitialized] = useState(false)
-  const [formOpen, setFormOpen] = useState(false)
   const [roleFormOpen, setRoleFormOpen] = useState(false)
 
   const { data: roleOptions } = useQuery({
     queryKey: ["tenant-roles"],
     queryFn: getRolesOptions,
+  })
+
+  const { data: allModules } = useQuery({
+    queryKey: ["tenant-modules"],
+    queryFn: getModuleOptions,
   })
 
   useEffect(() => {
@@ -99,31 +108,27 @@ export const RolePermissionPage = () => {
     enabled: !!selectedRoleId,
   })
 
-  const tableData = permissions ? transformPermissions(permissions) : []
-
-  console.log("Permissions : ",permissions)
-
-  const moduleOptions = Object.keys(PERMISSIONS).map((key) => ({
-    label: key,
-    value: key,
-  }))
+  const tableData =
+    allModules && permissions
+      ? transformPermissions(allModules, permissions)
+      : allModules
+        ? allModules.map((mod) => ({
+            moduleId: mod.value,
+            moduleName: mod.label,
+            create: false,
+            read: false,
+            modify: false,
+          }))
+        : []
 
   return (
     <PageContainer>
       <PageHeader
         pageName="Role Permission"
         pageSubName="Manage roles and their permissions"
-        actionButtonLabel="Add Role Permission"
-        onActionButtonClick={() => setFormOpen(true)}
+        actionButtonLabel="Add Role"
+        onActionButtonClick={() => setRoleFormOpen(true)}
         addPermission={hasPermission(PERMISSIONS.User.Create)}
-        extraButton={
-          <CustomButton
-            icon={<Plus className="size-4" />}
-            label="Add Role"
-            onClick={() => setRoleFormOpen(true)}
-            className="p-5"
-          />
-        }
       />
       <div className="flex items-center gap-4 pb-2">
         <span className="text-sm font-medium whitespace-nowrap">Select Role</span>
@@ -145,12 +150,6 @@ export const RolePermissionPage = () => {
           data={tableData}
           loading={isFetching}
         />
-      <RolePermissionForm
-        open={formOpen}
-        onOpenChange={setFormOpen}
-        roleOptions={roleOptions || []}
-        moduleOptions={moduleOptions}
-      />
       <RoleForm open={roleFormOpen} onOpenChange={setRoleFormOpen} />
     </PageContainer>
   )
